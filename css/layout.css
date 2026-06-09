@@ -69,21 +69,10 @@ main { position: relative; z-index: var(--z-base); }
    --------------------------------------------------------------------- */
 .access { text-align: left; }
 .access__inner {
-  border: var(--border-width) solid var(--line);
   border-radius: var(--radius-lg);
-  padding: clamp(var(--space-32), 4vw, var(--space-96));
   background: var(--surface);
   position: relative;
   overflow: hidden;
-}
-.access__inner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(60% 120% at 100% 0%, var(--glow), transparent 60%);
-  opacity: 0.5;
-  pointer-events: none;
 }
 .access__title { font-size: var(--fs-h2); margin-block: var(--space-16) var(--space-24); position: relative; }
 .access__form { max-width: 540px; position: relative; }
@@ -131,9 +120,31 @@ main { position: relative; z-index: var(--z-base); }
 [data-theme="positive"] .seq { color: var(--fg); }
 
 /* ---------------------------------------------------------------------
-   ACCESS as a cyberpunk terminal (phosphor green, boot-sequence lines)
+   ACCESS as a futuristic HUD panel (beveled corners, grid, phosphor)
+   Two-layer clip-path: outer = accent edge, screen = surface inset 1px.
    --------------------------------------------------------------------- */
-.access__inner--term { padding: 0; }
+.access__inner--hud {
+  --notch: 18px;
+  background: rgb(var(--brand-green-rgb) / 0.55);
+  padding: var(--border-width);
+  clip-path: polygon(var(--notch) 0, 100% 0, 100% calc(100% - var(--notch)), calc(100% - var(--notch)) 100%, 0 100%, 0 var(--notch));
+}
+.access__screen {
+  position: relative;
+  background: var(--bg);
+  clip-path: polygon(var(--notch) 0, 100% 0, 100% calc(100% - var(--notch)), calc(100% - var(--notch)) 100%, 0 100%, 0 var(--notch));
+  overflow: hidden;
+}
+/* faint HUD grid inside the panel */
+.access__screen::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background-image:
+    linear-gradient(rgb(var(--brand-green-rgb) / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--brand-green-rgb) / 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  mask-image: radial-gradient(120% 100% at 100% 0%, #000 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(120% 100% at 100% 0%, #000 20%, transparent 75%);
+}
 .access__bar {
   display: flex; align-items: center; gap: var(--space-8);
   padding: var(--space-12) var(--space-16);
@@ -148,19 +159,24 @@ main { position: relative; z-index: var(--z-base); }
   position: relative; z-index: 1;
   padding: clamp(var(--space-32), 4vw, var(--space-64));
 }
-/* faint scanline texture inside the terminal body */
-.access__body::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgb(var(--brand-green-rgb) / 0.02) 3px 4px);
-}
 .access__boot {
   font-family: var(--font-mono);
   font-size: var(--fs-small); line-height: 1.7;
   color: var(--accent);
-  text-shadow: 0 0 8px var(--glow);            /* phosphor glow */
+  text-shadow: 0 0 8px var(--glow);
   margin: var(--space-24) 0 var(--space-32);
 }
 .access__boot > span { display: block; }
 .access__boot-last { display: block; }
 .access__caret { color: var(--accent); animation: blink 1.05s steps(2) infinite; }
 [data-theme="positive"] .access__boot { color: #1a9e00; text-shadow: none; }
+
+/* corner code labels */
+.access__code {
+  position: absolute; z-index: 1;
+  font-family: var(--font-mono); font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide); color: var(--fg-faint);
+}
+.access__code--tl { top: var(--space-16); right: var(--space-24); }
+.access__code--br { bottom: var(--space-16); left: var(--space-24); }
+@media (max-width: 620px) { .access__code { display: none; } }

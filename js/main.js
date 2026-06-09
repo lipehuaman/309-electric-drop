@@ -566,6 +566,19 @@
     });
   }
 
+  function setupClock() {
+    var el = $("#hero-clock");
+    if (!el) return;
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function tick() {
+      var d = new Date();
+      el.textContent = "309 // " + pad(d.getDate()) + "-" + pad(d.getMonth() + 1) + "-" + d.getFullYear() +
+        " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
   function boot() {
     applyTheme();
     applyLang();
@@ -577,6 +590,7 @@
     setupForm();
     setupToggles();
     setupReveals();
+    setupClock();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

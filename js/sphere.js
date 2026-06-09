@@ -1,9 +1,11 @@
 /* =====================================================================
    309 TECHNOLOGY · PARTICLE SPHERE / MESH (factory)
    Vanilla canvas 2D. Mounts on every <canvas data-sphere>. A rotating
-   sphere of dust points plus a network of brighter nodes joined by
-   circuit lines. Theme-aware: on the positive (light) surface it shifts
-   to a deeper green with boosted alpha so the mesh stays visible on white.
+   form built from a dust cloud + a network of nodes joined by lines.
+   Options (data-*): dust, nodes, radius, edges (k-nearest), jitter
+   (spiky radius variance), longlinks (random crossing chords).
+   Mouse-interactive: the form tilts toward the pointer. Theme-aware:
+   deepens to a darker green on the light surface so it stays visible.
    Honours prefers-reduced-motion (single static frame) and pauses when
    the canvas scrolls out of view.
    ===================================================================== */
@@ -13,10 +15,14 @@
   var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var DPR = Math.min(window.devicePixelRatio || 1, 2);
 
+  // shared pointer (one listener for all instances)
+  var pointer = { x: null, y: null };
+  window.addEventListener("pointermove", function (e) { pointer.x = e.clientX; pointer.y = e.clientY; }, { passive: true });
+  window.addEventListener("pointerleave", function () { pointer.x = pointer.y = null; }, { passive: true });
+  window.addEventListener("blur", function () { pointer.x = pointer.y = null; });
+
   function palette() {
     var positive = document.documentElement.getAttribute("data-theme") === "positive";
-    // strict palette stays #58ff00 on dark; on light we deepen the green so
-    // the decorative mesh reads against white (brand green is invisible there).
     return positive ? { rgb: "26,150,0", mul: 1.8 } : { rgb: "88,255,0", mul: 1.0 };
   }
   function clamp(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
@@ -36,16 +42,19 @@
     var ctx = canvas.getContext("2d");
     if (!ctx) return;
     var d = canvas.dataset;
-    var smallScreen = window.innerWidth < 640;
+    var small = window.innerWidth < 640;
     var DUST = parseInt(d.dust || "1000", 10);
     var NODES = parseInt(d.nodes || "90", 10);
     var RADIUS = parseFloat(d.radius || "0.33");
     var K = parseInt(d.edges || "2", 10);
-    if (smallScreen) { DUST = Math.round(DUST * 0.6); NODES = Math.round(NODES * 0.7); }
+    var JIT = parseFloat(d.jitter || "0");
+    var LONG = parseInt(d.longlinks || "0", 10);
+    if (small) { DUST = Math.round(DUST * 0.6); NODES = Math.round(NODES * 0.75); }
 
     var W = 0, H = 0, CX = 0, CY = 0, R = 0;
-    var dust = [], nodes = [], edges = [];
+    var dust = [], nodes = [], nodeR = [], edges = [];
     var t = 0, raf = null, running = false;
+    var mx = 0, my = 0; // smoothed mouse influence
 
     function resize() {
       var rect = canvas.getBoundingClientRect();
@@ -53,11 +62,15 @@
       canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
       ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
       CX = W / 2; CY = H / 2;
-      R = Math.min(W, H) * (smallScreen ? RADIUS + 0.06 : RADIUS);
+      R = Math.min(W, H) * (small ? RADIUS + 0.05 : RADIUS);
     }
 
     function build() {
-      dust = fib(DUST); nodes = fib(NODES); edges = [];
+      dust = fib(DUST);
+      nodes = fib(NODES);
+      nodeR = [];
+      for (var a = 0; a < nodes.length; a++) { nodeR.push(1 + (Math.random() * 2 - 1) * JIT); }
+      edges = [];
       for (var i = 0; i < nodes.length; i++) {
         var near = [];
         for (var j = 0; j < nodes.length; j++) {
@@ -68,37 +81,55 @@
         near.sort(function (a, b) { return a.q - b.q; });
         for (var k = 0; k < K; k++) { if (near[k] && i < near[k].j) edges.push([i, near[k].j]); }
       }
+      // random crossing chords for a more complex web
+      for (var l = 0; l < LONG; l++) {
+        var u = (Math.random() * nodes.length) | 0, v = (Math.random() * nodes.length) | 0;
+        if (u !== v) edges.push([u, v]);
+      }
     }
 
-    function rotate(p, ax, ay) {
+    function rotate(p, ax, ay, rr) {
       var cy = Math.cos(ay), sy = Math.sin(ay);
       var x = p.x * cy - p.z * sy, z = p.x * sy + p.z * cy;
       var cx = Math.cos(ax), sx = Math.sin(ax);
       var y = p.y * cx - z * sx; z = p.y * sx + z * cx;
-      return { x: x, y: y, z: z };
+      return { x: x * rr, y: y * rr, z: z * rr };
+    }
+
+    function mouseTarget() {
+      if (pointer.x == null) return { x: 0, y: 0 };
+      var rect = canvas.getBoundingClientRect();
+      var dxn = (pointer.x - (rect.left + rect.width / 2)) / window.innerWidth;
+      var dyn = (pointer.y - (rect.top + rect.height / 2)) / window.innerHeight;
+      return { x: Math.max(-1, Math.min(1, dxn)) * 1.1, y: Math.max(-1, Math.min(1, dyn)) * 0.9 };
     }
 
     function render() {
       var pal = palette(), rgb = pal.rgb, mul = pal.mul;
+      var tg = mouseTarget();
+      mx += (tg.x - mx) * 0.06;
+      my += (tg.y - my) * 0.06;
       ctx.clearRect(0, 0, W, H);
-      var ay = t * 0.16, ax = 0.20 + Math.sin(t * 0.07) * 0.22;
+      var ay = t * 0.16 + mx;
+      var ax = 0.20 + Math.sin(t * 0.07) * 0.22 + my;
 
       for (var i = 0; i < dust.length; i++) {
-        var p = rotate(dust[i], ax, ay);
+        var p = rotate(dust[i], ax, ay, 1.12);
         var depth = (p.z + 1) / 2;
-        var a = clamp((0.08 + depth * 0.42) * mul);
+        var aa = clamp((0.08 + depth * 0.42) * mul);
         var s = 0.5 + depth * 1.4;
-        ctx.fillStyle = "rgba(" + rgb + "," + a.toFixed(3) + ")";
+        ctx.fillStyle = "rgba(" + rgb + "," + aa.toFixed(3) + ")";
         ctx.fillRect(CX + p.x * R, CY + p.y * R, s, s);
       }
 
       ctx.lineWidth = 1;
       for (var e = 0; e < edges.length; e++) {
-        var a1 = rotate(nodes[edges[e][0]], ax, ay);
-        var b1 = rotate(nodes[edges[e][1]], ax, ay);
+        var ia = edges[e][0], ib = edges[e][1];
+        var a1 = rotate(nodes[ia], ax, ay, nodeR[ia]);
+        var b1 = rotate(nodes[ib], ax, ay, nodeR[ib]);
         var dep = ((a1.z + b1.z) / 2 + 1) / 2;
         if (dep < 0.4) continue;
-        ctx.strokeStyle = "rgba(" + rgb + "," + clamp(dep * 0.45 * mul).toFixed(3) + ")";
+        ctx.strokeStyle = "rgba(" + rgb + "," + clamp(dep * 0.42 * mul).toFixed(3) + ")";
         ctx.beginPath();
         ctx.moveTo(CX + a1.x * R, CY + a1.y * R);
         ctx.lineTo(CX + b1.x * R, CY + b1.y * R);
@@ -106,7 +137,7 @@
       }
 
       for (var n = 0; n < nodes.length; n++) {
-        var q = rotate(nodes[n], ax, ay);
+        var q = rotate(nodes[n], ax, ay, nodeR[n]);
         var dd = (q.z + 1) / 2;
         var rad = 0.8 + dd * 2.2;
         ctx.fillStyle = "rgba(" + rgb + "," + clamp((0.35 + dd * 0.6) * mul).toFixed(3) + ")";
@@ -136,7 +167,6 @@
       rt = setTimeout(function () { resize(); build(); render(); }, 150);
     }, { passive: true });
 
-    // expose a repaint hook (used on theme change for the static/reduced case)
     return { render: render };
   }
 
@@ -146,7 +176,6 @@
     canvases.forEach(function (c) { var inst = createSphere(c); if (inst) instances.push(inst); });
   }
 
-  // repaint all when the theme flips (matters for reduced-motion static frames)
   window.addEventListener("themechange", function () {
     if (REDUCED) instances.forEach(function (s) { s.render(); });
   });

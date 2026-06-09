@@ -195,7 +195,12 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
       </div>
 
       <!-- cyberpunk HUD frame -->
-      <div class="hero__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="hero__frame" aria-hidden="true">
+        <span class="hf__top"><span id="hero-clock">309.SYS // 00:00:00</span></span>
+        <span class="hf__bar"></span>
+        <span class="hf__ticks"></span>
+        <i class="hf__c hf__c--tl"></i><i class="hf__c hf__c--tr"></i><i class="hf__c hf__c--bl"></i><i class="hf__c hf__c--br"></i>
+      </div>
     </section>
 
     <!-- ============ BRAND STORY · MODULAR SYNERGY ============ -->
@@ -212,8 +217,8 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
 
         <!-- modular synergy as a futuristic mesh (same language as the hero sphere) -->
         <div class="modules" data-inview>
-          <canvas class="modules__mesh" aria-label="Modular nodes connecting into one system" role="img"
-                  data-sphere data-dust="520" data-nodes="70" data-radius="0.46" data-edges="3"></canvas>
+          <canvas class="modules__mesh" aria-label="A complex modular network forming one system" role="img"
+                  data-sphere data-dust="720" data-nodes="84" data-radius="0.50" data-edges="4" data-jitter="0.24" data-longlinks="30"></canvas>
         </div>
       </div>
     </section>
@@ -234,7 +239,8 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
     <!-- ============ ACCESS / SIGNUP ============ -->
     <section class="section access" id="access" aria-labelledby="access-title">
       <div class="container container--tight">
-        <div class="access__inner access__inner--term" data-inview>
+        <div class="access__inner access__inner--hud" data-inview>
+          <div class="access__screen">
           <div class="access__bar" aria-hidden="true">
             <span class="terminal__dot"></span><span class="terminal__dot"></span><span class="terminal__dot terminal__dot--live"></span>
             <span class="access__bar-title">309://access_channel</span>
@@ -268,6 +274,9 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
             </div>
             <p class="form__status" id="form-status" data-state="idle" role="status" aria-live="polite"></p>
           </form>
+          </div>
+          <span class="access__code access__code--tl" aria-hidden="true">SEQ_04 / 00.001</span>
+          <span class="access__code access__code--br" aria-hidden="true">01000001.01000011</span>
           </div>
         </div>
       </div>
