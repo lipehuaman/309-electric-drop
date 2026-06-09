@@ -96,11 +96,14 @@
   --line:      rgb(255 255 255 / 0.14);
   --line-strong: rgb(255 255 255 / 0.30);
   --surface:   rgb(255 255 255 / 0.03);
-  --surface-2: rgb(255 255 255 / 0.06);
   --on-accent: var(--brand-black);   /* text that sits on a green fill */
   --grid-line: rgb(255 255 255 / 0.04);
   --fx-grid:   rgb(var(--brand-green-rgb) / 0.055);
   --fx-scan:   rgb(var(--brand-green-rgb) / 0.022);
+  --glass-bg:   rgb(255 255 255 / 0.05);
+  --glass-edge: rgb(255 255 255 / 0.14);
+  --glass-hi:   rgb(255 255 255 / 0.10);
+  --glass-blur: blur(13px) saturate(1.2);
   --glow:      rgb(var(--brand-green-rgb) / 0.45);
 }
 
@@ -116,10 +119,13 @@
   --line:      rgb(0 0 0 / 0.16);
   --line-strong: rgb(0 0 0 / 0.34);
   --surface:   rgb(0 0 0 / 0.03);
-  --surface-2: rgb(0 0 0 / 0.06);
   --on-accent: var(--brand-black);
   --grid-line: rgb(0 0 0 / 0.05);
   --fx-grid:   rgb(26 150 0 / 0.07);
   --fx-scan:   rgb(26 150 0 / 0.03);
+  --glass-bg:   rgb(255 255 255 / 0.5);
+  --glass-edge: rgb(0 0 0 / 0.12);
+  --glass-hi:   rgb(255 255 255 / 0.65);
+  --glass-blur: blur(13px) saturate(1.2);
   --glow:      rgb(var(--brand-green-rgb) / 0.30);
 }
