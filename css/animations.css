@@ -49,41 +49,12 @@
 }
 [data-inview].in-view { opacity: 1; transform: translateY(0); }
 
-/* modular synergy graphic: lines draw, modules snap in */
-.modules .mod-node {
-  transform-box: fill-box;
-  transform-origin: center;
-  opacity: 0;
-  transform: scale(0.3);
-  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
-  transition-delay: calc(var(--i, 0) * 90ms);
-}
-.modules.in-view .mod-node { opacity: 1; transform: scale(1); }
-
-.modules .mod-link {
-  stroke-dasharray: var(--len, 200);
-  stroke-dashoffset: var(--len, 200);
-  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
-  transition-delay: calc(0.25s + var(--i, 0) * 90ms);
-}
-.modules.in-view .mod-link { stroke-dashoffset: 0; }
-
-.modules .mod-core {
-  opacity: 0;
-  transition: opacity var(--dur-slow) var(--ease-out);
-  transition-delay: 0.7s;
-}
-.modules.in-view .mod-core { opacity: 1; }
-
 /* =====================================================================
    REDUCED MOTION · show everything in its final state, no movement
    ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
-  [data-inview],
-  .modules .mod-node,
-  .modules .mod-core { opacity: 1 !important; transform: none !important; }
-  .modules .mod-link { stroke-dashoffset: 0 !important; }
+  [data-inview] { opacity: 1 !important; transform: none !important; }
   .terminal__caret,
   .card:hover .card__media::after { animation: none !important; }
 }

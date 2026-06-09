@@ -138,7 +138,7 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
   <main id="main">
     <!-- ============ HERO (full screen, centered, particle sphere) ============ -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <canvas class="hero__sphere" id="hero-sphere" aria-hidden="true"></canvas>
+      <canvas class="hero__sphere" id="hero-sphere" aria-hidden="true" data-sphere data-dust="1100" data-nodes="96" data-radius="0.33" data-edges="2"></canvas>
       <div class="hero__glow" aria-hidden="true"></div>
 
       <!-- unconventional HUD corners (scramble text) -->
@@ -186,18 +186,16 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
         </div>
       </div>
 
-      <!-- bottom HUD strip: specs + scroll cue -->
+      <!-- bottom scroll cue -->
       <div class="hero__foot" data-reveal style="--i:6">
-        <div class="specs">
-          <div class="spec"><span class="spec__value" data-i18n="spec.1v">03</span> <span class="spec__label" data-scramble data-i18n="spec.1l">Editions in the drop</span></div>
-          <div class="spec"><span class="spec__value" data-i18n="spec.2v">AA</span> <span class="spec__label" data-scramble data-i18n="spec.2l">Contrast baseline</span></div>
-          <div class="spec"><span class="spec__value" data-i18n="spec.3v">100%</span> <span class="spec__label" data-scramble data-i18n="spec.3l">Vanilla, no framework</span></div>
-        </div>
         <a class="hero__scroll" href="#story" aria-label="Scroll to manifesto">
           <span data-scramble>SCROLL</span>
           <span class="hero__scroll-line" aria-hidden="true"></span>
         </a>
       </div>
+
+      <!-- cyberpunk HUD frame -->
+      <div class="hero__frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     </section>
 
     <!-- ============ BRAND STORY · MODULAR SYNERGY ============ -->
@@ -212,22 +210,11 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
           <p class="manifesto__sig" data-inview><span class="sq"></span> <span data-i18n="story.sig">One shape. Repeated. Connected.</span></p>
         </div>
 
-        <!-- modular synergy graphic: nodes connect via circuit lines on scroll -->
-        <svg class="modules" viewBox="0 0 400 400" role="img" aria-label="Modular nodes connecting into one system" data-inview>
-          <g class="mod-links" stroke="var(--accent)" stroke-width="2" fill="none">
-            <line class="mod-link" style="--len:150;--i:0" x1="80"  y1="80"  x2="200" y2="200"></line>
-            <line class="mod-link" style="--len:150;--i:1" x1="320" y1="80"  x2="200" y2="200"></line>
-            <line class="mod-link" style="--len:150;--i:2" x1="80"  y1="320" x2="200" y2="200"></line>
-            <line class="mod-link" style="--len:150;--i:3" x1="320" y1="320" x2="200" y2="200"></line>
-          </g>
-          <g fill="var(--fg)">
-            <rect class="mod-node" style="--i:0" x="56"  y="56"  width="48" height="48" rx="6"></rect>
-            <rect class="mod-node" style="--i:1" x="296" y="56"  width="48" height="48" rx="6"></rect>
-            <rect class="mod-node" style="--i:2" x="56"  y="296" width="48" height="48" rx="6"></rect>
-            <rect class="mod-node" style="--i:3" x="296" y="296" width="48" height="48" rx="6"></rect>
-          </g>
-          <rect class="mod-core" x="168" y="168" width="64" height="64" rx="8" fill="var(--accent)"></rect>
-        </svg>
+        <!-- modular synergy as a futuristic mesh (same language as the hero sphere) -->
+        <div class="modules" data-inview>
+          <canvas class="modules__mesh" aria-label="Modular nodes connecting into one system" role="img"
+                  data-sphere data-dust="520" data-nodes="70" data-radius="0.46" data-edges="3"></canvas>
+        </div>
       </div>
     </section>
 
@@ -247,11 +234,22 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
     <!-- ============ ACCESS / SIGNUP ============ -->
     <section class="section access" id="access" aria-labelledby="access-title">
       <div class="container container--tight">
-        <div class="access__inner" data-inview>
+        <div class="access__inner access__inner--term" data-inview>
+          <div class="access__bar" aria-hidden="true">
+            <span class="terminal__dot"></span><span class="terminal__dot"></span><span class="terminal__dot terminal__dot--live"></span>
+            <span class="access__bar-title">309://access_channel</span>
+          </div>
+          <div class="access__body">
           <span class="seq"><span data-i18n="access.seqn">04</span> <small data-scramble data-i18n="access.seq">Sequence</small></span>
           <p class="eyebrow" style="margin-top:var(--space-16)" data-scramble data-i18n="access.eyebrow">Join the network</p>
           <h2 class="access__title" id="access-title" data-i18n="access.title">Request early access</h2>
           <p class="lead" data-i18n="access.lead">The next drop is co-created with the network. Leave your email to receive the command.</p>
+
+          <div class="access__boot" aria-hidden="true">
+            <span data-scramble>&gt; boot_sequence: 309.access</span>
+            <span data-scramble>&gt; system_status: ONLINE</span>
+            <span class="access__boot-last"><span data-scramble>&gt; awaiting: transmission</span> <span class="access__caret">_</span></span>
+          </div>
 
           <form class="access__form" id="access-form" novalidate>
             <div class="field" id="access-field">
@@ -270,6 +268,7 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
             </div>
             <p class="form__status" id="form-status" data-state="idle" role="status" aria-live="polite"></p>
           </form>
+          </div>
         </div>
       </div>
     </section>

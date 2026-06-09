@@ -45,6 +45,7 @@
     document.documentElement.setAttribute("data-theme", theme);
     var btn = $("[data-theme-toggle]");
     if (btn) btn.setAttribute("aria-pressed", String(theme === "positive"));
+    try { window.dispatchEvent(new Event("themechange")); } catch (e) {}
   }
 
   /* =================================================================

@@ -78,8 +78,8 @@ window.PRODUCTS = [
     sizes: ["S", "M", "L"],
     status: "soldout",
     tagKey: "tag.soldout",
-    video: null,
-    poster: null,
+    video: "assets/products/hoodie-black.mp4",
+    poster: "assets/products/hoodie-black.jpg",
     copy: {
       en: {
         desc: "Heavyweight black hoodie carrying the 309 mark in white. Built for the people who give the command.",

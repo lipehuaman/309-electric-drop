@@ -26,54 +26,6 @@ main { position: relative; z-index: var(--z-base); }
 .seq small { color: var(--fg-faint); font-size: 0.6em; letter-spacing: var(--tracking-mega); }
 
 /* ---------------------------------------------------------------------
-   HERO
-   --------------------------------------------------------------------- */
-.hero {
-  position: relative;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
-  padding-top: 96px;
-  padding-bottom: var(--space-64);
-}
-.hero__grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-48);
-  align-items: center;
-  width: 100%;
-}
-.hero__eyebrow { margin-bottom: var(--space-24); }
-.hero__title {
-  font-size: var(--fs-hero);
-  margin-bottom: var(--space-24);
-}
-.hero__title .line { display: block; overflow: hidden; }
-.hero__title .accent { color: var(--accent); }
-.hero__lead { margin-bottom: var(--space-32); }
-.hero__ctas { display: flex; flex-wrap: wrap; gap: var(--space-12); margin-bottom: var(--space-48); }
-
-/* the assembling 309 mark */
-.hero__mark { display: flex; justify-content: flex-start; }
-.hero__mark .logo { width: min(86vw, 560px); color: var(--fg); }
-
-/* the stat / spec strip */
-.specs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-32);
-  padding-top: var(--space-32);
-  border-top: var(--border-width) solid var(--line);
-}
-.spec__value { font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-h3); }
-.spec__label { font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--fg-faint); }
-
-@media (min-width: 920px) {
-  .hero__grid { grid-template-columns: 1.05fr 0.95fr; }
-  .hero__mark { justify-content: flex-end; }
-}
-
-/* ---------------------------------------------------------------------
    BRAND STORY · modular synergy
    --------------------------------------------------------------------- */
 .story__grid {
@@ -174,8 +126,41 @@ main { position: relative; z-index: var(--z-base); }
 }
 
 /* Contrast guard: green never as informative text on the light (positive)
-   surface. On the positive treatment, accent text falls back to --fg;
+   surface. On the positive treatment, sequence numbers fall back to --fg;
    green presence is carried by fills, markers and the dark-first canvas. */
-[data-theme="positive"] .hero__title .accent { color: var(--fg); }
 [data-theme="positive"] .seq { color: var(--fg); }
-[data-theme="positive"] .seq span:first-child { color: var(--fg); }
+
+/* ---------------------------------------------------------------------
+   ACCESS as a cyberpunk terminal (phosphor green, boot-sequence lines)
+   --------------------------------------------------------------------- */
+.access__inner--term { padding: 0; }
+.access__bar {
+  display: flex; align-items: center; gap: var(--space-8);
+  padding: var(--space-12) var(--space-16);
+  border-bottom: var(--border-width) solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro); letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--fg-faint);
+  position: relative; z-index: 1;
+}
+.access__bar-title { margin-left: auto; }
+.access__body {
+  position: relative; z-index: 1;
+  padding: clamp(var(--space-32), 4vw, var(--space-64));
+}
+/* faint scanline texture inside the terminal body */
+.access__body::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, transparent 0 3px, rgb(var(--brand-green-rgb) / 0.02) 3px 4px);
+}
+.access__boot {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small); line-height: 1.7;
+  color: var(--accent);
+  text-shadow: 0 0 8px var(--glow);            /* phosphor glow */
+  margin: var(--space-24) 0 var(--space-32);
+}
+.access__boot > span { display: block; }
+.access__boot-last { display: block; }
+.access__caret { color: var(--accent); animation: blink 1.05s steps(2) infinite; }
+[data-theme="positive"] .access__boot { color: #1a9e00; text-shadow: none; }
