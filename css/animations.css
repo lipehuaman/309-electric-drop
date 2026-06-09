@@ -16,15 +16,6 @@
   to   { transform: translateY(360%); opacity: 0; }
 }
 @keyframes blink { 50% { opacity: 0.15; } }
-@keyframes pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%      { opacity: 0.55; transform: scale(0.86); }
-}
-@keyframes drawline { to { stroke-dashoffset: 0; } }
-@keyframes modIn {
-  from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
-  to   { opacity: 1; transform: scale(1) rotate(0); }
-}
 @keyframes assemble {
   from { clip-path: inset(0 100% 0 0); }
   to   { clip-path: inset(0 0 0 0); }
@@ -33,47 +24,23 @@
 /* ---------- caret (terminal) ---------- */
 .terminal__caret { animation: blink 1.05s steps(2) infinite; }
 
-/* ---------- ambient green square accent ---------- */
-.accent-sq { animation: pulse 3.2s var(--ease-in-out) infinite; }
-
 /* =====================================================================
    LOAD SEQUENCE
-   Elements with [data-reveal] start hidden; .is-booted on <body>
-   triggers a staggered rise. --i sets the per-element delay.
+   Elements with [data-reveal] start hidden ONLY when JS is on (.js);
+   .is-booted on <body> triggers a staggered rise. --i sets the delay.
+   Without JS, content stays visible (progressive enhancement).
    ===================================================================== */
-[data-reveal] { opacity: 0; }
+.js [data-reveal] { opacity: 0; }
 
 .is-booted [data-reveal] {
   animation: rise var(--dur-slow) var(--ease-out) both;
   animation-delay: calc(var(--i, 0) * var(--stagger));
 }
 
-/* the 309 mark assembles via a left-to-right clip wipe after boot */
-.hero__mark .logo { clip-path: inset(0 100% 0 0); }
-.is-booted .hero__mark .logo {
-  animation: assemble var(--dur-boot) var(--ease-out) forwards;
-  animation-delay: calc(2 * var(--stagger));
-}
-/* green module squares that snap in while the mark assembles */
-.assembler { position: absolute; inset: 0; pointer-events: none; }
-.assembler__mod {
-  position: absolute;
-  width: 14%; height: 18%;
-  background: var(--accent);
-  opacity: 0;
-}
-.is-booted .assembler__mod { animation: modIn 0.5s var(--ease-out) forwards, pulse 0s 0.5s; }
-.is-booted .assembler__mod:nth-child(1) { animation-delay: 0.15s; }
-.is-booted .assembler__mod:nth-child(2) { animation-delay: 0.30s; }
-.is-booted .assembler__mod:nth-child(3) { animation-delay: 0.45s; }
-.is-booted .assembler__mod { /* fade out after the mark is revealed */
-  animation: modIn 0.45s var(--ease-out) forwards;
-}
-
 /* =====================================================================
    SCROLL REVEALS (IntersectionObserver adds .in-view)
    ===================================================================== */
-[data-inview] {
+.js [data-inview] {
   opacity: 0;
   transform: translateY(36px);
   transition: opacity var(--dur-slow) var(--ease-out),
@@ -113,9 +80,10 @@
    ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
-  [data-inview].modules .mod-node.modules .mod-core { opacity: 1 !important; transform: none !important; }
+  [data-inview],
+  .modules .mod-node,
+  .modules .mod-core { opacity: 1 !important; transform: none !important; }
   .modules .mod-link { stroke-dashoffset: 0 !important; }
-  .hero__mark .logo { clip-path: none !important; animation: none !important; }
-  .assembler { display: none; }
-  .terminal__caret.accent-sq.card:hover .card__media::after { animation: none !important; }
+  .terminal__caret,
+  .card:hover .card__media::after { animation: none !important; }
 }

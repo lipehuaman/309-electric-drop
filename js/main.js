@@ -320,12 +320,116 @@
       // refresh dynamic strings inside cards/terminal
       var out = $("#term-output");
       if (out && out.getAttribute("data-state") !== "ok") out.textContent = t("hero.term.idle");
+      scrambleRefresh();
     });
+  }
+
+  /* =================================================================
+     TEXT SCRAMBLE (decode effect for secondary text)
+     ================================================================= */
+  var GLYPHS = "ABCDEFGHJKLMNPQRSTUVWXYZ0123456789/<>*#_[]%".split("");
+
+  function scrambleTo(el, text) {
+    text = (text == null ? "" : String(text));
+    if (REDUCED) { el.textContent = text; return; }
+    if (el._sti) { clearInterval(el._sti); el._sti = null; }
+    var frame = 0;
+    var settle = text.split("").map(function (ch, i) { return 3 + i + Math.floor(Math.random() * 6); });
+    var max = settle.length ? Math.max.apply(null, settle) : 1;
+    el._sti = setInterval(function () {
+      var out = "";
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+        if (ch === " ") { out += " "; continue; }
+        out += (frame >= settle[i]) ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      }
+      el.textContent = out;
+      frame++;
+      if (frame > max) { clearInterval(el._sti); el._sti = null; el.textContent = text; }
+    }, 30);
+  }
+
+  function inView(el) {
+    var r = el.getBoundingClientRect();
+    return r.top < window.innerHeight && r.bottom > 0;
+  }
+
+  // observe page scramble targets; decode on first view (loader excluded)
+  function scrambleObserve() {
+    var els = $$("[data-scramble]").filter(function (el) { return !el.closest(".loader"); });
+    els.forEach(function (el) { if (el._starget == null) el._starget = el.textContent.trim(); });
+    if (REDUCED || !("IntersectionObserver" in window)) {
+      els.forEach(function (el) { el.textContent = el._starget; });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { scrambleTo(en.target, en.target._starget); obs.unobserve(en.target); }
+      });
+    }, { threshold: 0.4 });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  // replay after a language switch (text changed under the hood)
+  function scrambleRefresh() {
+    $$("[data-scramble]").forEach(function (el) {
+      if (el.closest(".loader")) return;
+      el._starget = el.textContent.trim();
+      if (inView(el)) scrambleTo(el, el._starget);
+    });
+  }
+
+  /* =================================================================
+     PRELOADER (boot screen): count 000 -> 100, then wipe + reveal
+     ================================================================= */
+  function runLoader(done) {
+    var loader = $("#loader");
+    if (!loader) { done(); return; }
+    var finished = false;
+    document.body.style.overflow = "hidden";
+
+    // decode the loader's own labels right away
+    $$("[data-scramble]", loader).forEach(function (el) { scrambleTo(el, el.textContent.trim()); });
+
+    var countEl = $("#loader-count");
+    var fillEl = $("#loader-fill");
+    var dur = REDUCED ? 200 : 1700;
+    var start = performance.now();
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+      document.body.style.overflow = "";
+      loader.classList.add("loader--done");
+      done();
+      var remove = function () { if (loader && loader.parentNode) loader.parentNode.removeChild(loader); };
+      if (REDUCED) remove(); else setTimeout(remove, 760);
+    }
+
+    function step(now) {
+      var p = Math.min(1, (now - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 2);
+      var pct = Math.round(eased * 100);
+      if (countEl) countEl.textContent = ("00" + pct).slice(-3);
+      if (fillEl) fillEl.style.right = (100 - pct) + "%";
+      if (p < 1) requestAnimationFrame(step); else finish();
+    }
+    requestAnimationFrame(step);
+    setTimeout(finish, 4000); // safety: never trap the user
   }
 
   /* =================================================================
      BOOT
      ================================================================= */
+  function reveal() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        document.body.classList.add("is-booted");
+        scrambleObserve();
+      });
+    });
+  }
+
   function boot() {
     applyTheme();
     applyLang();
@@ -341,10 +445,8 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
-    // orchestrated load sequence (CSS handles the choreography)
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { document.body.classList.add("is-booted"); });
-    });
+    // boot screen first, then the orchestrated reveal
+    runLoader(reveal);
   }
 
   if (document.readyState === "loading") {

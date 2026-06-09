@@ -1,0 +1,138 @@
+/* =====================================================================
+   309 TECHNOLOGY · HERO (full-screen, centered, particle sphere)
+   + PRELOADER (boot screen) + HUD corners
+   ===================================================================== */
+
+/* ---------------------------------------------------------------------
+   HERO shell: occupies the full viewport on every device, content centered
+   --------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 100vh;     /* fallback */
+  min-height: 100svh;    /* stable on mobile (no jump with URL bar) */
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  text-align: center;
+  padding: calc(64px + var(--space-32)) var(--gutter) var(--space-96);
+}
+
+.hero__sphere {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0; pointer-events: none;
+}
+.hero__glow {
+  position: absolute; inset: 0;
+  z-index: 0; pointer-events: none;
+  background: radial-gradient(closest-side at 50% 47%, var(--glow), transparent 70%);
+  opacity: 0.75;
+}
+
+.hero__center {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-24);
+  width: 100%; max-width: 760px;
+}
+.hero__eyebrow { margin: 0; }
+.hero__title { font-size: var(--fs-hero); margin: 0; }
+.hero__title .line { display: block; }
+.hero__title .accent { color: var(--accent); }
+[data-theme="positive"] .hero__title .accent { color: var(--fg); }
+.hero__lead { margin: 0 auto; max-width: 54ch; color: var(--fg-muted); }
+.hero__ctas { display: flex; flex-wrap: wrap; gap: var(--space-12); justify-content: center; }
+
+.hero .terminal {
+  margin: var(--space-16) auto 0;
+  text-align: left;
+  width: 100%; max-width: 480px;
+}
+
+/* ---------------------------------------------------------------------
+   HUD corners (unconventional framing, scramble text)
+   --------------------------------------------------------------------- */
+.hero__hud { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hud {
+  position: absolute;
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
+  white-space: nowrap;
+}
+.hud::before { content: ""; }
+.hud--tl { top: 84px; left: var(--gutter); }
+.hud--tr { top: 84px; right: var(--gutter); }
+@media (max-width: 800px) { .hud--tl, .hud--tr { top: 78px; font-size: 0.66rem; } }
+
+/* ---------------------------------------------------------------------
+   Bottom strip: specs + scroll cue
+   --------------------------------------------------------------------- */
+.hero__foot {
+  position: absolute; left: 0; right: 0; bottom: var(--space-24);
+  z-index: 2;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: var(--space-24);
+  padding-inline: var(--gutter);
+}
+.specs { display: flex; gap: var(--space-24); flex-wrap: wrap; }
+.spec { display: inline-flex; align-items: baseline; gap: var(--space-8); }
+.spec__value { font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-small); color: var(--accent); }
+[data-theme="positive"] .spec__value { color: var(--fg); }
+.spec__label { font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--fg-faint); }
+
+.hero__scroll {
+  display: inline-flex; align-items: center; gap: var(--space-8);
+  font-size: var(--fs-micro); letter-spacing: var(--tracking-mega);
+  text-transform: uppercase; color: var(--fg-muted);
+  flex: none;
+}
+.hero__scroll-line { width: 44px; height: 1px; background: linear-gradient(90deg, var(--accent), transparent); }
+
+@media (max-width: 620px) {
+  .hero__foot { flex-direction: column; gap: var(--space-12); bottom: var(--space-16); }
+  .specs { justify-content: center; gap: var(--space-16); }
+}
+/* on short viewports, let the foot flow instead of overlapping the terminal */
+@media (max-height: 720px) {
+  .hero { padding-bottom: var(--space-64); }
+  .hero__foot { position: static; margin-top: var(--space-32); flex-wrap: wrap; justify-content: center; }
+}
+
+/* ---------------------------------------------------------------------
+   PRELOADER (boot screen): always black/green, the brand's boot surface
+   Hidden entirely without JS so no-JS users are never stuck.
+   --------------------------------------------------------------------- */
+.loader { display: none; }
+.js .loader {
+  display: flex; flex-direction: column; justify-content: space-between;
+  position: fixed; inset: 0; z-index: 9999;
+  background: var(--brand-black); color: var(--brand-white);
+  padding: var(--space-32) var(--gutter);
+  animation: loaderAuto 3.6s forwards;   /* safety net if JS stalls */
+}
+.loader__top { display: flex; justify-content: space-between; gap: var(--space-16); }
+.loader__tag { font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); color: rgb(255 255 255 / 0.45); }
+.loader__center { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-24); }
+.loader__mark { width: min(58vw, 300px); color: var(--brand-white); }
+.loader__label { font-size: var(--fs-micro); letter-spacing: var(--tracking-mega); color: var(--brand-green); }
+.loader__bottom { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-24); }
+.loader__bar { position: relative; flex: 1; height: 2px; background: rgb(255 255 255 / 0.14); overflow: hidden; }
+.loader__bar-fill { position: absolute; inset: 0 100% 0 0; background: var(--brand-green); }
+.loader__count {
+  font-family: var(--font-display); font-weight: var(--fw-bold);
+  font-size: clamp(3rem, 13vw, 9rem); line-height: 0.78; color: var(--brand-white);
+  font-variant-numeric: tabular-nums;
+}
+.loader--done { transform: translateY(-100%); transition: transform 0.7s var(--ease-in-out); }
+
+@keyframes loaderAuto { 0%, 90% { } 100% { opacity: 0; visibility: hidden; } }
+
+/* the boot mark draws in on the loader */
+.js .loader__mark { clip-path: inset(0 100% 0 0); animation: assemble 1s var(--ease-out) 0.1s forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .js .loader { animation: none; }
+  .js .loader__mark { clip-path: none; animation: none; }
+}
