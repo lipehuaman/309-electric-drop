@@ -1,0 +1,121 @@
+/* =====================================================================
+   309 TECHNOLOGY · ANIMATIONS / MOTION
+   One orchestrated load sequence + scroll-aware reveals.
+   All effects use transform/opacity only (no layout thrash, 60fps).
+   prefers-reduced-motion short-circuits everything to the end state.
+   ===================================================================== */
+
+/* ---------- keyframes ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scan {
+  from { transform: translateY(-140%); opacity: 0; }
+  20%  { opacity: 1; }
+  to   { transform: translateY(360%); opacity: 0; }
+}
+@keyframes blink { 50% { opacity: 0.15; } }
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.55; transform: scale(0.86); }
+}
+@keyframes drawline { to { stroke-dashoffset: 0; } }
+@keyframes modIn {
+  from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+  to   { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes assemble {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* ---------- caret (terminal) ---------- */
+.terminal__caret { animation: blink 1.05s steps(2) infinite; }
+
+/* ---------- ambient green square accent ---------- */
+.accent-sq { animation: pulse 3.2s var(--ease-in-out) infinite; }
+
+/* =====================================================================
+   LOAD SEQUENCE
+   Elements with [data-reveal] start hidden; .is-booted on <body>
+   triggers a staggered rise. --i sets the per-element delay.
+   ===================================================================== */
+[data-reveal] { opacity: 0; }
+
+.is-booted [data-reveal] {
+  animation: rise var(--dur-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger));
+}
+
+/* the 309 mark assembles via a left-to-right clip wipe after boot */
+.hero__mark .logo { clip-path: inset(0 100% 0 0); }
+.is-booted .hero__mark .logo {
+  animation: assemble var(--dur-boot) var(--ease-out) forwards;
+  animation-delay: calc(2 * var(--stagger));
+}
+/* green module squares that snap in while the mark assembles */
+.assembler { position: absolute; inset: 0; pointer-events: none; }
+.assembler__mod {
+  position: absolute;
+  width: 14%; height: 18%;
+  background: var(--accent);
+  opacity: 0;
+}
+.is-booted .assembler__mod { animation: modIn 0.5s var(--ease-out) forwards, pulse 0s 0.5s; }
+.is-booted .assembler__mod:nth-child(1) { animation-delay: 0.15s; }
+.is-booted .assembler__mod:nth-child(2) { animation-delay: 0.30s; }
+.is-booted .assembler__mod:nth-child(3) { animation-delay: 0.45s; }
+.is-booted .assembler__mod { /* fade out after the mark is revealed */
+  animation: modIn 0.45s var(--ease-out) forwards;
+}
+
+/* =====================================================================
+   SCROLL REVEALS (IntersectionObserver adds .in-view)
+   ===================================================================== */
+[data-inview] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+[data-inview].in-view { opacity: 1; transform: translateY(0); }
+
+/* modular synergy graphic: lines draw, modules snap in */
+.modules .mod-node {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+  transform: scale(0.3);
+  transition: opacity var(--dur) var(--ease-out), transform var(--dur) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+.modules.in-view .mod-node { opacity: 1; transform: scale(1); }
+
+.modules .mod-link {
+  stroke-dasharray: var(--len, 200);
+  stroke-dashoffset: var(--len, 200);
+  transition: stroke-dashoffset var(--dur-slow) var(--ease-out);
+  transition-delay: calc(0.25s + var(--i, 0) * 90ms);
+}
+.modules.in-view .mod-link { stroke-dashoffset: 0; }
+
+.modules .mod-core {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-out);
+  transition-delay: 0.7s;
+}
+.modules.in-view .mod-core { opacity: 1; }
+
+/* =====================================================================
+   REDUCED MOTION · show everything in its final state, no movement
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-inview].modules .mod-node.modules .mod-core { opacity: 1 !important; transform: none !important; }
+  .modules .mod-link { stroke-dashoffset: 0 !important; }
+  .hero__mark .logo { clip-path: none !important; animation: none !important; }
+  .assembler { display: none; }
+  .terminal__caret.accent-sq.card:hover .card__media::after { animation: none !important; }
+}

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="negative">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>309 Technology, The Electric Drop</title>
+  <meta name="description" content="309 Technology, modular, co-created technology. The Electric Drop: three limited editions in black, white and electric green. A vanilla HTML/CSS/JS build.">
+  <meta property="og:title" content="309 Technology, The Electric Drop">
+  <meta property="og:description" content="Modular technology, co-created. Three limited editions. Black, white, electric green.">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <script defer src="js/products.js"></script>
+  <script defer src="js/i18n.js"></script>
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ INLINE SVG DEFS (define once, reuse everywhere) ============ -->
+  <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+    <defs>
+      <!-- 309 wordmark, traced from the brand book (single colour, currentColor) -->
+      <symbol id="logo-309" viewBox="0 0 2178 684">
+        <g fill="currentColor"><g transform="translate(0,684) scale(0.1,-0.1)"><path d="M109 6817 c-48 -26 -83 -70 -99 -126 -14 -52 -13 -659 1 -702 17 -51
+55 -97 99 -119 39 -20 62 -20 1637 -20 1364 0 1608 -2 1668 -15 104 -22 208
+-78 286 -155 72 -71 109 -128 148 -229 l26 -66 5 -672 5 -671 30 -43 c17 -23
+50 -53 74 -66 l44 -23 767 0 767 0 44 23 c29 16 54 40 74 72 l30 48 0 696 c0
+547 -3 714 -14 781 -105 644 -564 1129 -1213 1282 l-93 22 -2121 3 -2120 3
+-45 -23z"/><path d="M8275 6833 c-164 -21 -342 -76 -500 -154 -423 -208 -716 -587 -828
+-1071 l-21 -93 -3 -1882 -3 -1881 21 -58 c26 -69 97 -145 167 -177 47 -22 49
+-22 727 -22 l680 0 57 28 c62 30 115 83 150 149 l23 43 5 1820 c5 1703 6 1824
+23 1879 57 190 194 333 394 409 l58 22 1280 5 c1253 5 1281 5 1313 25 18 11
+45 37 60 59 l27 39 3 346 c2 190 0 361 -3 379 -7 40 -68 110 -112 129 -27 11
+-332 13 -1760 12 -950 -1 -1741 -4 -1758 -6z"/><path d="M16315 6833 c-427 -56 -801 -272 -1055 -611 -170 -226 -271 -488
+-300 -774 -8 -80 -10 -571 -8 -1683 l3 -1570 26 -56 c33 -69 89 -127 155 -160
+l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
+-339 -287 l-80 -28 -1240 4 c-918 2 -1251 0 -1283 -8 -48 -13 -105 -59 -130
+-105 -15 -27 -17 -73 -20 -363 -2 -222 0 -345 8 -373 6 -23 27 -59 46 -80 69
+-77 -84 -71 1859 -67 1949 3 1789 -3 2030 78 139 46 292 124 408 206 105 74
+286 255 360 360 123 174 215 389 259 606 l23 112 0 1875 0 1875 -25 50 c-36
+73 -105 138 -174 164 -57 21 -62 21 -729 19 l-672 -3 -49 -24 c-66 -33 -122
+-91 -155 -160 l-26 -56 -3 -1402 -2 -1403 -1575 0 -1575 0 0 1518 c0 1683 -4
+1579 67 1716 51 98 156 202 254 250 139 68 80 66 1454 66 l1240 0 40 23 c21
+12 53 42 70 65 l30 44 0 356 c0 343 -1 359 -21 397 -11 22 -40 54 -63 70 l-43
+30 -1736 1 c-956 1 -1750 -1 -1767 -3z"/><path d="M12134 5339 c-49 -14 -125 -69 -161 -117 -67 -89 -63 39 -63 -1916 0
+-1969 4 -1843 -69 -1991 -66 -133 -199 -246 -351 -298 l-65 -22 -1265 0 -1265
+0 -42 -24 c-24 -14 -55 -42 -70 -64 l-28 -40 0 -368 0 -367 30 -43 c17 -23 50
+-53 75 -66 l44 -23 1751 3 1750 3 100 22 c420 96 746 315 975 652 161 239 241
+478 261 785 6 103 9 774 7 1895 -3 1990 8 1787 -102 1895 -102 100 -56 95
+-821 94 -363 0 -674 -5 -691 -10z"/><path d="M10171 3702 c-71 -35 -76 -52 -79 -260 -4 -216 4 -253 57 -289 32
+-21 44 -23 187 -23 148 0 153 1 182 25 50 42 53 64 50 283 -3 198 -3 201 -28
+228 -42 45 -78 54 -212 54 -97 0 -130 -4 -157 -18z"/><path d="M1869 3451 c-29 -29 -29 -31 -29 -141 0 -99 9 -147 33 -172 1 -2 452
+-5 1002 -8 l1000 -5 3 -790 c2 -541 -1 -810 -8 -855 -37 -218 -201 -398 -425
+-467 -57 -17 -129 -18 -1656 -14 -1262 3 -1604 1 -1635 -9 -55 -18 -101 -55
+-127 -103 -21 -41 -22 -53 -25 -357 -4 -360 1 -401 55 -460 69 -77 -125 -71
+2218 -67 l2100 3 100 22 c420 96 746 315 975 652 155 229 240 477 260 760 14
+185 13 1816 -1 1880 -13 62 -57 115 -114 141 -38 18 -121 19 -1868 19 l-1829
+0 -29 -29z"/></g></g>
+      </symbol>
+
+      <!-- garment mockups (flat silhouettes; body = currentColor, seams = --gi) -->
+      <g id="garment-tee">
+        <path class="garment-body" fill="currentColor" d="M19 12 C22 9 26 8 30 9 L38 11 C42 16 46 18 50 18 C54 18 58 16 62 11 L70 9 C74 8 78 9 81 12 L94 25 C96 27 96 30 94 32 L84 43 C83 44 81 44 80 43 L75 38 L75 118 C75 122 72 125 68 125 L32 125 C28 125 25 122 25 118 L25 38 L20 43 C19 44 17 44 16 43 L6 32 C4 30 4 27 6 25 Z"/>
+      </g>
+
+      <g id="garment-hoodie">
+        <path class="garment-body" fill="currentColor" d="M18 20 C22 18 26 18 30 19 C33 26 38 30 50 30 C62 30 67 26 70 19 C74 18 78 18 82 20 L95 33 C97 35 97 38 95 40 L85 51 C84 52 82 52 81 51 L76 46 L76 120 C76 124 73 127 69 127 L31 127 C27 127 24 124 24 120 L24 46 L19 51 C18 52 16 52 15 51 L5 40 C3 38 3 35 5 33 Z"/>
+        <path class="garment-body" fill="currentColor" d="M30 19 C30 9 70 9 70 19 C64 24 58 27 50 27 C42 27 36 24 30 19 Z"/>
+        <path class="garment-seam" fill="none" stroke="var(--gi)" stroke-width="1.4" stroke-opacity="0.55" d="M47 28 L46 41 M53 28 L54 41"/>
+        <path class="garment-seam" fill="none" stroke="var(--gi)" stroke-width="1.4" stroke-opacity="0.55" d="M36 92 L64 92 L60 110 L40 110 Z"/>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- ============ HEADER / NAV ============ -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="nav__brand" href="#top" aria-label="309 Technology, home">
+        <svg class="logo" viewBox="0 0 2178 684" role="img" aria-label="309 Technology"><use href="#logo-309"></use></svg>
+      </a>
+
+      <ul class="nav__links" id="nav-links">
+        <li><a class="nav__link" href="#story" data-i18n="nav.story">Manifesto</a></li>
+        <li><a class="nav__link" href="#drop" data-i18n="nav.drop">The Drop</a></li>
+        <li><a class="nav__link" href="#access" data-i18n="nav.access">Access</a></li>
+      </ul>
+
+      <div class="nav__tools">
+        <button class="toggle" data-theme-toggle type="button" aria-pressed="false" aria-label="Toggle positive / negative theme">
+          <svg class="toggle__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"></circle>
+            <path d="M12 3 a9 9 0 0 1 0 18 Z" fill="currentColor"></path>
+          </svg>
+        </button>
+        <button class="toggle" data-lang-toggle type="button" aria-label="Switch language">
+          <span class="toggle__text">ES</span>
+        </button>
+        <button class="nav__burger" id="nav-burger" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+          <span class="nav__burger-bar"></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============ HERO ============ -->
+    <section class="hero section" id="top" aria-labelledby="hero-title">
+      <div class="hero__grid container">
+        <div class="hero__copy">
+          <p class="eyebrow hero__eyebrow" data-reveal style="--i:0"><span data-i18n="hero.eyebrow">309 Technology, System online</span></p>
+
+          <h1 class="hero__title" id="hero-title">
+            <span class="line" data-reveal style="--i:1"><span data-i18n="hero.title1">Technology is</span></span>
+            <span class="line accent" data-reveal style="--i:2"><span data-i18n="hero.title2">co-created</span></span>
+          </h1>
+
+          <p class="lead hero__lead" data-reveal style="--i:3" data-i18n="hero.lead">A modular system, assembled from bold individual parts. The Electric Drop is the first release, built for the people who give the command.</p>
+
+          <div class="hero__ctas" data-reveal style="--i:4">
+            <a class="btn btn--primary" href="#drop"><span data-i18n="hero.cta1">Enter the drop</span> <span class="btn__arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn--ghost" href="#story" data-i18n="hero.cta2">Read the manifesto</a>
+          </div>
+
+          <!-- command terminal: "waiting for your command" -->
+          <div class="terminal" data-reveal style="--i:5" role="group" aria-labelledby="term-label">
+            <div class="terminal__bar">
+              <span class="terminal__dot"></span><span class="terminal__dot"></span><span class="terminal__dot terminal__dot--live"></span>
+              <span style="margin-left:auto" data-i18n="hero.term.title">309://terminal</span>
+            </div>
+            <div class="terminal__body">
+              <label class="sr-only" id="term-label" for="term-input" data-i18n="hero.term.label">Command line</label>
+              <div class="terminal__prompt">
+                <span class="terminal__caret" aria-hidden="true">&gt;_</span>
+                <input class="terminal__input" id="term-input" type="text" autocomplete="off" spellcheck="false"
+                       data-i18n-ph="hero.term.ph" placeholder="type a command…">
+              </div>
+              <p class="terminal__output" id="term-output" role="status" aria-live="polite"></p>
+              <div class="terminal__hints">
+                <span class="eyebrow" style="letter-spacing:var(--tracking-wide)" data-i18n="hero.term.hint">Try:</span>
+                <button class="chip" type="button" data-cmd="drop">drop</button>
+                <button class="chip" type="button" data-cmd="manifesto">manifesto</button>
+                <button class="chip" type="button" data-cmd="access">access</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="hero__mark" data-reveal style="--i:2">
+            <div style="position:relative">
+              <svg class="logo" viewBox="0 0 2178 684" role="img" aria-label="309 Technology"><use href="#logo-309"></use></svg>
+              <span class="assembler" aria-hidden="true">
+                <i class="assembler__mod accent-sq" style="width:9%;height:13%;top:-9%;left:1%"></i>
+                <i class="assembler__mod accent-sq" style="width:7%;height:10%;top:-7%;left:46%"></i>
+                <i class="assembler__mod accent-sq" style="width:8%;height:11%;top:-8%;left:91%"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="specs" data-reveal style="--i:6">
+            <div class="spec"><div class="spec__value" data-i18n="spec.1v">03</div><div class="spec__label" data-i18n="spec.1l">Editions in the drop</div></div>
+            <div class="spec"><div class="spec__value" data-i18n="spec.2v">AA</div><div class="spec__label" data-i18n="spec.2l">Contrast baseline</div></div>
+            <div class="spec"><div class="spec__value" data-i18n="spec.3v">100%</div><div class="spec__label" data-i18n="spec.3l">Vanilla, no framework</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BRAND STORY · MODULAR SYNERGY ============ -->
+    <section class="section story" id="story" aria-labelledby="story-title">
+      <div class="container story__grid">
+        <div class="manifesto">
+          <span class="seq" data-inview><span data-i18n="story.seqn">02</span> <small data-i18n="story.seq">Sequence</small></span>
+          <p class="eyebrow" data-inview data-i18n="story.eyebrow">The concept</p>
+          <h2 class="manifesto__title" id="story-title" data-inview data-i18n="story.title">Modular synergy</h2>
+          <p class="manifesto__body" data-inview><strong data-i18n="story.body1">Technology is not just built. It is co-created.</strong></p>
+          <p class="manifesto__body" data-inview data-i18n="story.body2">Each module is bold and capable on its own. But it is through connection, through shared purpose, that the extraordinary emerges.</p>
+          <p class="manifesto__sig" data-inview><span class="sq"></span> <span data-i18n="story.sig">One shape. Repeated. Connected.</span></p>
+        </div>
+
+        <!-- modular synergy graphic: nodes connect via circuit lines on scroll -->
+        <svg class="modules" viewBox="0 0 400 400" role="img" aria-label="Modular nodes connecting into one system" data-inview>
+          <g class="mod-links" stroke="var(--accent)" stroke-width="2" fill="none">
+            <line class="mod-link" style="--len:150;--i:0" x1="80"  y1="80"  x2="200" y2="200"></line>
+            <line class="mod-link" style="--len:150;--i:1" x1="320" y1="80"  x2="200" y2="200"></line>
+            <line class="mod-link" style="--len:150;--i:2" x1="80"  y1="320" x2="200" y2="200"></line>
+            <line class="mod-link" style="--len:150;--i:3" x1="320" y1="320" x2="200" y2="200"></line>
+          </g>
+          <g fill="var(--fg)">
+            <rect class="mod-node" style="--i:0" x="56"  y="56"  width="48" height="48" rx="6"></rect>
+            <rect class="mod-node" style="--i:1" x="296" y="56"  width="48" height="48" rx="6"></rect>
+            <rect class="mod-node" style="--i:2" x="56"  y="296" width="48" height="48" rx="6"></rect>
+            <rect class="mod-node" style="--i:3" x="296" y="296" width="48" height="48" rx="6"></rect>
+          </g>
+          <rect class="mod-core" x="168" y="168" width="64" height="64" rx="8" fill="var(--accent)"></rect>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ MERCH DROP ============ -->
+    <section class="section merch" id="drop" aria-labelledby="drop-title">
+      <div class="container">
+        <div class="section__head">
+          <span class="seq" data-inview><span data-i18n="drop.seqn">03</span> <small data-i18n="drop.seq">Sequence</small></span>
+          <p class="eyebrow" data-inview data-i18n="drop.eyebrow">Limited release</p>
+          <h2 id="drop-title" style="font-size:var(--fs-h2)" data-inview data-i18n="drop.title">The drop</h2>
+          <p class="lead" data-inview data-i18n="drop.lead">Three editions, drawn straight from the identity system. Black, white, electric green, nothing else.</p>
+        </div>
+        <div class="merch__grid" id="merch-grid"><!-- cards injected from products.js --></div>
+      </div>
+    </section>
+
+    <!-- ============ ACCESS / SIGNUP ============ -->
+    <section class="section access" id="access" aria-labelledby="access-title">
+      <div class="container container--tight">
+        <div class="access__inner" data-inview>
+          <span class="seq"><span data-i18n="access.seqn">04</span> <small data-i18n="access.seq">Sequence</small></span>
+          <p class="eyebrow" style="margin-top:var(--space-16)" data-i18n="access.eyebrow">Join the network</p>
+          <h2 class="access__title" id="access-title" data-i18n="access.title">Request early access</h2>
+          <p class="lead" data-i18n="access.lead">The next drop is co-created with the network. Leave your email to receive the command.</p>
+
+          <form class="access__form" id="access-form" novalidate>
+            <div class="field" id="access-field">
+              <label class="field__label" for="email" data-i18n="access.label">Email address</label>
+              <div class="field__control">
+                <span class="field__caret" aria-hidden="true">&gt;</span>
+                <input class="field__input" id="email" name="email" type="email" autocomplete="email"
+                       inputmode="email" aria-describedby="form-status"
+                       data-i18n-ph="access.ph" placeholder="you@domain.com">
+              </div>
+            </div>
+            <div style="margin-top:var(--space-16)">
+              <button class="btn btn--primary" id="access-submit" type="submit">
+                <span data-i18n="access.submit">Request access</span> <span class="btn__arrow" aria-hidden="true">→</span>
+              </button>
+            </div>
+            <p class="form__status" id="form-status" data-state="idle" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <svg class="logo" viewBox="0 0 2178 684" role="img" aria-label="309 Technology"><use href="#logo-309"></use></svg>
+          <p data-i18n="footer.tagline">Modular technology, co-created. Black, white, electric green.</p>
+        </div>
+        <div class="footer__cols">
+          <div class="footer__col">
+            <h4 data-i18n="footer.nav">Navigate</h4>
+            <a href="#story" data-i18n="nav.story">Manifesto</a>
+            <a href="#drop" data-i18n="nav.drop">The Drop</a>
+            <a href="#access" data-i18n="nav.access">Access</a>
+          </div>
+          <div class="footer__col">
+            <h4 data-i18n="footer.connect">Connect</h4>
+            <a href="#" rel="noopener">GitHub</a>
+            <a href="#" rel="noopener">Instagram</a>
+            <a href="#" rel="noopener">X / Twitter</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span data-i18n="footer.rights">309 Technology Inc · Rev 01</span>
+        <span data-i18n="footer.legal">Designed &amp; built as an assessment, not affiliated commercial use.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- live region + toast for cart/notify feedback -->
+  <div id="live" class="sr-only" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" data-show="false" role="status" aria-live="polite">
+    <span class="toast__sq" aria-hidden="true"></span><span id="toast-msg"></span>
+  </div>
+</body>
+</html>

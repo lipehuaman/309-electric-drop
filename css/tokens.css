@@ -1,0 +1,120 @@
+/* =====================================================================
+   309 TECHNOLOGY · DESIGN TOKENS
+   Single source of truth. Every colour, type and space value below
+   traces back to the brand book (black / white / electric green only).
+   Themed surfaces use alpha of those three colours, never a 4th hue.
+   ===================================================================== */
+
+:root {
+  /* --- Brand palette (immutable, from the brand book) --- */
+  --brand-black: #000000;   /* Pantone Black 6 C */
+  --brand-white: #ffffff;
+  --brand-green: #58ff00;   /* Pantone 802 C / RGB 88 255 0 */
+  --brand-green-rgb: 88 255 0;
+
+  /* --- Type families --- */
+  --font-display: "Rajdhani", system-ui, sans-serif;
+  --font-body:    "Rajdhani", system-ui, sans-serif;
+
+  /* --- Type scale (fluid, mobile-first via clamp) --- */
+  --fs-hero:   clamp(2.75rem, 1.4rem + 9vw, 8.5rem);
+  --fs-h2:     clamp(2rem, 1.2rem + 3.4vw, 4.25rem);
+  --fs-h3:     clamp(1.25rem, 1rem + 1vw, 1.65rem);
+  --fs-lead:   clamp(1.1rem, 1rem + 0.6vw, 1.5rem);
+  --fs-body:   clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-small:  0.875rem;
+  --fs-micro:  0.75rem;
+
+  --fw-regular: 400;
+  --fw-medium:  500;
+  --fw-semibold:600;
+  --fw-bold:    700;
+
+  --lh-tight: 0.95;
+  --lh-snug:  1.15;
+  --lh-body:  1.55;
+
+  --tracking-tight: -0.01em;
+  --tracking-wide:  0.18em;
+  --tracking-mega:  0.42em;   /* eyebrows / data labels */
+
+  /* --- Spacing scale (8pt based) --- */
+  --space-2:  0.125rem;
+  --space-4:  0.25rem;
+  --space-8:  0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+  --space-128:8rem;
+  --space-section: clamp(4.5rem, 3rem + 9vw, 9rem);
+
+  /* --- Layout --- */
+  --container: 1320px;
+  --container-tight: 940px;
+  --gutter: clamp(1.25rem, 0.5rem + 3vw, 3rem);
+
+  /* --- Radius (rounded-square geometry echoes the logo) --- */
+  --radius-sm: 3px;
+  --radius:    6px;
+  --radius-lg: 12px;
+
+  /* --- Borders / lines --- */
+  --border-width: 1px;
+
+  /* --- Motion --- */
+  --ease-out:    cubic-bezier(0.16, 0.84, 0.30, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:  0.18s;
+  --dur:       0.34s;
+  --dur-slow:  0.7s;
+  --dur-boot:  1.2s;
+  --stagger:   80ms;
+
+  /* --- Z layers --- */
+  --z-bg: 0;
+  --z-base: 1;
+  --z-nav: 100;
+  --z-overlay: 200;
+  --z-toast: 300;
+}
+
+/* =====================================================================
+   THEME · NEGATIVE (dark-first, the brand's primary surface)
+   ===================================================================== */
+:root,
+[data-theme="negative"] {
+  --bg:        var(--brand-black);
+  --fg:        var(--brand-white);
+  --fg-muted:  rgb(255 255 255 / 0.62);
+  --fg-faint:  rgb(255 255 255 / 0.38);
+  --accent:    var(--brand-green);
+  --line:      rgb(255 255 255 / 0.14);
+  --line-strong: rgb(255 255 255 / 0.30);
+  --surface:   rgb(255 255 255 / 0.03);
+  --surface-2: rgb(255 255 255 / 0.06);
+  --on-accent: var(--brand-black);   /* text that sits on a green fill */
+  --grid-line: rgb(255 255 255 / 0.04);
+  --glow:      rgb(var(--brand-green-rgb) / 0.45);
+}
+
+/* =====================================================================
+   THEME · POSITIVE (light, the brand's positive treatment)
+   ===================================================================== */
+[data-theme="positive"] {
+  --bg:        var(--brand-white);
+  --fg:        var(--brand-black);
+  --fg-muted:  rgb(0 0 0 / 0.62);
+  --fg-faint:  rgb(0 0 0 / 0.40);
+  --accent:    var(--brand-green);
+  --line:      rgb(0 0 0 / 0.16);
+  --line-strong: rgb(0 0 0 / 0.34);
+  --surface:   rgb(0 0 0 / 0.03);
+  --surface-2: rgb(0 0 0 / 0.06);
+  --on-accent: var(--brand-black);
+  --grid-line: rgb(0 0 0 / 0.05);
+  --glow:      rgb(var(--brand-green-rgb) / 0.30);
+}

@@ -1,0 +1,181 @@
+/* =====================================================================
+   309 TECHNOLOGY · LAYOUT
+   Section composition + responsive grid. Mobile-first.
+   ===================================================================== */
+
+main { position: relative; z-index: var(--z-base); }
+
+.section { padding-block: var(--space-section); position: relative; }
+
+/* shared section header */
+.section__head { display: flex; flex-direction: column; gap: var(--space-16); margin-bottom: var(--space-64); }
+.section__head .lead { margin-top: var(--space-8); }
+
+/* sequence index marker, the page is a deliberate boot sequence,
+   so the numbering encodes activation order, not decoration */
+.seq {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-8);
+  font-family: var(--font-display);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-h3);
+  color: var(--accent);
+  letter-spacing: var(--tracking-wide);
+}
+.seq small { color: var(--fg-faint); font-size: 0.6em; letter-spacing: var(--tracking-mega); }
+
+/* ---------------------------------------------------------------------
+   HERO
+   --------------------------------------------------------------------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-top: 96px;
+  padding-bottom: var(--space-64);
+}
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-48);
+  align-items: center;
+  width: 100%;
+}
+.hero__eyebrow { margin-bottom: var(--space-24); }
+.hero__title {
+  font-size: var(--fs-hero);
+  margin-bottom: var(--space-24);
+}
+.hero__title .line { display: block; overflow: hidden; }
+.hero__title .accent { color: var(--accent); }
+.hero__lead { margin-bottom: var(--space-32); }
+.hero__ctas { display: flex; flex-wrap: wrap; gap: var(--space-12); margin-bottom: var(--space-48); }
+
+/* the assembling 309 mark */
+.hero__mark { display: flex; justify-content: flex-start; }
+.hero__mark .logo { width: min(86vw, 560px); color: var(--fg); }
+
+/* the stat / spec strip */
+.specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-32);
+  padding-top: var(--space-32);
+  border-top: var(--border-width) solid var(--line);
+}
+.spec__value { font-family: var(--font-display); font-weight: var(--fw-bold); font-size: var(--fs-h3); }
+.spec__label { font-size: var(--fs-micro); letter-spacing: var(--tracking-wide); text-transform: uppercase; color: var(--fg-faint); }
+
+@media (min-width: 920px) {
+  .hero__grid { grid-template-columns: 1.05fr 0.95fr; }
+  .hero__mark { justify-content: flex-end; }
+}
+
+/* ---------------------------------------------------------------------
+   BRAND STORY · modular synergy
+   --------------------------------------------------------------------- */
+.story__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-64);
+  align-items: center;
+}
+.manifesto { display: flex; flex-direction: column; gap: var(--space-24); }
+.manifesto__title { font-size: var(--fs-h2); }
+.manifesto__body { font-size: var(--fs-lead); font-weight: var(--fw-regular); line-height: var(--lh-snug); color: var(--fg-muted); max-width: 40ch; }
+.manifesto__body strong { color: var(--fg); font-weight: var(--fw-semibold); }
+.manifesto__sig {
+  font-weight: var(--fw-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+.modules { width: 100%; aspect-ratio: 1 / 1; max-width: 480px; margin-inline: auto; }
+
+@media (min-width: 920px) {
+  .story__grid { grid-template-columns: 0.9fr 1.1fr; }
+}
+
+/* ---------------------------------------------------------------------
+   MERCH DROP · grid 1 -> 2 -> 3
+   --------------------------------------------------------------------- */
+.merch__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-24);
+}
+@media (min-width: 620px)  { .merch__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .merch__grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ---------------------------------------------------------------------
+   ACCESS · signup
+   --------------------------------------------------------------------- */
+.access { text-align: left; }
+.access__inner {
+  border: var(--border-width) solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(var(--space-32), 4vw, var(--space-96));
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+.access__inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 120% at 100% 0%, var(--glow), transparent 60%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.access__title { font-size: var(--fs-h2); margin-block: var(--space-16) var(--space-24); position: relative; }
+.access__form { max-width: 540px; position: relative; }
+
+/* ---------------------------------------------------------------------
+   FOOTER
+   --------------------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  z-index: var(--z-base);
+  border-top: var(--border-width) solid var(--line);
+  padding-block: var(--space-64) var(--space-32);
+  background: var(--bg);
+}
+.footer__top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-48);
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-64);
+}
+.footer__brand .logo { width: 96px; color: var(--fg); } /* condensed mark, small size per brand */
+.footer__brand p { margin-top: var(--space-16); color: var(--fg-muted); max-width: 34ch; font-size: var(--fs-small); }
+.footer__cols { display: flex; flex-wrap: wrap; gap: clamp(var(--space-32), 6vw, var(--space-96)); }
+.footer__col h4 { font-size: var(--fs-micro); letter-spacing: var(--tracking-mega); color: var(--fg-faint); margin-bottom: var(--space-16); }
+.footer__col a { display: block; padding-block: var(--space-4); color: var(--fg-muted); font-size: var(--fs-small); transition: color var(--dur-fast) var(--ease-out); }
+.footer__col a:hover { color: var(--fg); }
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-16);
+  justify-content: space-between;
+  padding-top: var(--space-24);
+  border-top: var(--border-width) solid var(--line);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+/* Contrast guard: green never as informative text on the light (positive)
+   surface. On the positive treatment, accent text falls back to --fg;
+   green presence is carried by fills, markers and the dark-first canvas. */
+[data-theme="positive"] .hero__title .accent { color: var(--fg); }
+[data-theme="positive"] .seq { color: var(--fg); }
+[data-theme="positive"] .seq span:first-child { color: var(--fg); }
