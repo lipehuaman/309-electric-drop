@@ -99,6 +99,8 @@
   --surface-2: rgb(255 255 255 / 0.06);
   --on-accent: var(--brand-black);   /* text that sits on a green fill */
   --grid-line: rgb(255 255 255 / 0.04);
+  --fx-grid:   rgb(var(--brand-green-rgb) / 0.055);
+  --fx-scan:   rgb(var(--brand-green-rgb) / 0.022);
   --glow:      rgb(var(--brand-green-rgb) / 0.45);
 }
 
@@ -117,5 +119,7 @@
   --surface-2: rgb(0 0 0 / 0.06);
   --on-accent: var(--brand-black);
   --grid-line: rgb(0 0 0 / 0.05);
+  --fx-grid:   rgb(26 150 0 / 0.07);
+  --fx-scan:   rgb(26 150 0 / 0.03);
   --glow:      rgb(var(--brand-green-rgb) / 0.30);
 }

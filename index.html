@@ -31,6 +31,7 @@
   <script defer src="js/main.js"></script>
 </head>
 <body>
+  <div class="fx-bg" aria-hidden="true"></div>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ============ INLINE SVG DEFS (define once, reuse everywhere) ============ -->
@@ -252,9 +253,9 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
           <p class="lead" data-i18n="access.lead">The next drop is co-created with the network. Leave your email to receive the command.</p>
 
           <div class="access__boot" aria-hidden="true">
-            <span data-scramble>&gt; boot_sequence: 309.access</span>
-            <span data-scramble>&gt; system_status: ONLINE</span>
-            <span class="access__boot-last"><span data-scramble>&gt; awaiting: transmission</span> <span class="access__caret">_</span></span>
+            <span data-scramble data-i18n="access.boot1">&gt; First access, before anyone else.</span>
+            <span data-scramble data-i18n="access.boot2">&gt; Limited drops, no restock.</span>
+            <span class="access__boot-last"><span data-scramble data-i18n="access.boot3">&gt; Your spot starts here.</span> <span class="access__caret">_</span></span>
           </div>
 
           <form class="access__form" id="access-form" novalidate>
@@ -275,7 +276,7 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
             <p class="form__status" id="form-status" data-state="idle" role="status" aria-live="polite"></p>
           </form>
           </div>
-          <span class="access__code access__code--tl" aria-hidden="true">SEQ_04 / 00.001</span>
+          <span class="access__code access__code--tr" aria-hidden="true">SEQ_04 / 00.001</span>
           <span class="access__code access__code--br" aria-hidden="true">01000001.01000011</span>
           </div>
         </div>

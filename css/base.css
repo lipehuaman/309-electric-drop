@@ -172,3 +172,19 @@ h1, h2, h3, h4 {
   background-image: repeating-linear-gradient(
     0deg, transparent 0 3px, rgb(0 0 0 / 0.015) 3px 4px );
 }
+
+/* ---------------------------------------------------------------------
+   Global digital-interface backdrop (subtle green grid + scanlines).
+   Fixed behind all content; reads like a HUD screen. Theme-aware.
+   --------------------------------------------------------------------- */
+.fx-bg {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(var(--fx-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fx-grid) 1px, transparent 1px);
+  background-size: 46px 46px;
+}
+.fx-bg::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(0deg, var(--fx-scan) 0 1px, transparent 1px 3px);
+}

@@ -171,12 +171,12 @@ main { position: relative; z-index: var(--z-base); }
 .access__caret { color: var(--accent); animation: blink 1.05s steps(2) infinite; }
 [data-theme="positive"] .access__boot { color: #1a9e00; text-shadow: none; }
 
-/* corner code labels */
+/* corner code labels (kept clear of the bar and the form column) */
 .access__code {
   position: absolute; z-index: 1;
   font-family: var(--font-mono); font-size: var(--fs-micro);
   letter-spacing: var(--tracking-wide); color: var(--fg-faint);
 }
-.access__code--tl { top: var(--space-16); right: var(--space-24); }
-.access__code--br { bottom: var(--space-16); left: var(--space-24); }
-@media (max-width: 620px) { .access__code { display: none; } }
+.access__code--tr { top: 64px; right: var(--space-24); }
+.access__code--br { bottom: var(--space-24); right: var(--space-24); }
+@media (max-width: 900px) { .access__code { display: none; } }
