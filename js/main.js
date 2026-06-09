@@ -50,6 +50,19 @@
   /* =================================================================
      PRODUCT CARDS (rendered from window.PRODUCTS)
      ================================================================= */
+  function mediaHTML(p, cls) {
+    cls = cls || "";
+    if (p.video) {
+      return '<video class="prod-video ' + cls + '" poster="' + p.poster + '" ' +
+        'preload="none" muted loop playsinline aria-label="' + p.name + '" data-src="' + p.video + '"></video>';
+    }
+    // fallback: coded SVG garment mockup (until its video lands)
+    return '<span class="prod-mock ' + cls + '" style="--gb:' + p.body + ';--gi:' + p.ink + '">' +
+      '<svg class="card__garment" viewBox="0 0 100 130" aria-hidden="true"><use href="#garment-' + p.garment + '"></use></svg>' +
+      '<svg class="card__chest logo" viewBox="0 0 2178 684" role="img" aria-label="309 on ' + p.name + '"><use href="#logo-309"></use></svg>' +
+      '</span>';
+  }
+
   function renderProducts() {
     var grid = $("#merch-grid");
     if (!grid || !window.PRODUCTS) return;
@@ -61,52 +74,43 @@
       card.className = "card";
       card.setAttribute("data-inview", "");
 
-      var sizesHtml = p.sizes.map(function (s) {
-        return '<button type="button" class="size" aria-pressed="false"' +
-               (out ? " disabled" : "") +
-               ' data-size="' + s + '" aria-label="' + t("card.size") + ' ' + s + '">' + s + '</button>';
-      }).join("");
-
       card.innerHTML =
-        '<div class="card__media" style="--gb:' + p.body + ';--gi:' + p.ink + '">' +
-          '<span class="card__tag' + (out ? " card__tag--out" : "") + '" data-i18n="' + p.tagKey + '">' + t(p.tagKey) + '</span>' +
-          '<svg class="card__garment" viewBox="0 0 100 130" aria-hidden="true"><use href="#garment-' + p.garment + '"></use></svg>' +
-          '<svg class="card__chest logo" viewBox="0 0 2178 684" role="img" aria-label="309 logo on ' + p.name + '"><use href="#logo-309"></use></svg>' +
-        '</div>' +
+        '<button type="button" class="card__trigger" aria-haspopup="dialog" aria-label="' + t("card.view") + ': ' + p.name + '">' +
+          '<span class="card__media">' +
+            '<span class="card__tag' + (out ? " card__tag--out" : "") + '" data-i18n="' + p.tagKey + '">' + t(p.tagKey) + '</span>' +
+            mediaHTML(p) +
+            '<span class="card__open" aria-hidden="true"><span>' + t("card.view") + '</span> &#8599;</span>' +
+          '</span>' +
+        '</button>' +
         '<div class="card__body">' +
           '<div class="card__head">' +
             '<div><h3 class="card__name">' + p.name + '</h3>' +
             '<span class="card__edition">' + p.edition + '</span></div>' +
             '<span class="card__price">$' + p.price + '</span>' +
           '</div>' +
-          '<div class="card__sizes" role="group" aria-label="' + t("card.size") + '">' + sizesHtml + '</div>' +
-          '<button type="button" class="btn ' + (out ? "btn--ghost" : "btn--primary") + ' card__action" data-i18n="' +
-            (out ? "card.notify" : "card.add") + '">' + t(out ? "card.notify" : "card.add") + '</button>' +
         '</div>';
 
-      // size selection (single-select within the card)
-      var sizeBtns = $$(".size", card);
-      var picked = null;
-      sizeBtns.forEach(function (b) {
-        b.addEventListener("click", function () {
-          sizeBtns.forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
-          b.setAttribute("aria-pressed", "true");
-          picked = b.getAttribute("data-size");
-        });
-      });
-
-      // action
-      var action = $(".card__action", card);
-      action.addEventListener("click", function () {
-        if (out) { announce(t("card.notifyset") + " · " + p.name); return; }
-        if (!picked) { announce(t("card.size") + ", " + p.name); flash(card.querySelector(".card__sizes")); return; }
-        announce(t("card.added") + ": " + p.name + " (" + picked + ")");
-      });
-
+      card.querySelector(".card__trigger").addEventListener("click", function () { openPDP(p, this); });
       frag.appendChild(card);
     });
 
     grid.appendChild(frag);
+    setupVideoAutoplay();
+  }
+
+  // product videos play only while visible (keeps initial load light)
+  function setupVideoAutoplay() {
+    var vids = $$(".prod-video");
+    vids.forEach(function (v) { if (!v.src && v.dataset.src) v.src = v.dataset.src; });
+    if (REDUCED) return;
+    if (!("IntersectionObserver" in window)) { vids.forEach(function (v) { v.play().catch(function () {}); }); return; }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.play().catch(function () {}); }
+        else { en.target.pause(); }
+      });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { io.observe(v); });
   }
 
   function flash(el) {
@@ -131,6 +135,135 @@
       clearTimeout(toastTimer);
       toastTimer = setTimeout(function () { toast.setAttribute("data-show", "false"); }, 2800);
     }
+  }
+
+  /* =================================================================
+     PRODUCT DETAIL (PDP): skylrk-style two-column view, data-driven
+     ================================================================= */
+  var pdp = { product: null, size: null, opener: null, bound: false };
+
+  function pdpFill(p) {
+    pdp.product = p;
+    pdp.size = null;
+    var out = p.status === "soldout";
+    var c = (p.copy && (p.copy[lang] || p.copy.en)) || { desc: "", fabric: "", features: [], made: "" };
+
+    $("#pdp-edition").textContent = p.edition;
+    $("#pdp-name").textContent = p.name;
+    $("#pdp-price").textContent = "$" + p.price;
+    $("#pdp-desc").textContent = c.desc;
+    $("#pdp-fabric").textContent = c.fabric;
+    $("#pdp-made").textContent = c.made;
+    $("#pdp-color").textContent = p.edition.replace(/_/g, " ");
+
+    var feat = $("#pdp-features");
+    feat.innerHTML = "";
+    c.features.forEach(function (f) { var li = document.createElement("li"); li.textContent = f; feat.appendChild(li); });
+
+    var media = $("#pdp-media");
+    media.innerHTML = mediaHTML(p, "pdp__visual");
+    var pv = media.querySelector(".prod-video");
+    if (pv && pv.dataset.src) { pv.src = pv.dataset.src; if (!REDUCED) pv.play().catch(function () {}); }
+
+    // colourway swatches (switch between editions in place)
+    var sw = $("#pdp-swatches");
+    sw.innerHTML = "";
+    window.PRODUCTS.forEach(function (q) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "swatch" + (q.id === p.id ? " is-active" : "");
+      b.style.setProperty("--sw", q.swatch);
+      b.setAttribute("aria-label", q.name);
+      b.setAttribute("aria-pressed", String(q.id === p.id));
+      b.addEventListener("click", function () { if (pdp.product && q.id !== pdp.product.id) pdpFill(q); });
+      sw.appendChild(b);
+    });
+
+    // sizes
+    var sizes = $("#pdp-sizes");
+    sizes.innerHTML = "";
+    $("#pdp-size-val").textContent = "";
+    p.sizes.forEach(function (s) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "size";
+      b.setAttribute("aria-pressed", "false");
+      b.setAttribute("data-size", s);
+      b.setAttribute("aria-label", t("detail.size") + " " + s);
+      if (out) b.disabled = true;
+      b.textContent = s;
+      b.addEventListener("click", function () {
+        $$(".size", sizes).forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+        b.setAttribute("aria-pressed", "true");
+        pdp.size = s;
+        $("#pdp-size-val").textContent = s;
+      });
+      sizes.appendChild(b);
+    });
+
+    var add = $("#pdp-add");
+    add.className = "btn " + (out ? "btn--ghost" : "btn--primary") + " pdp__add";
+    add.textContent = t(out ? "card.notify" : "card.add");
+    var status = $("#pdp-status");
+    status.setAttribute("data-state", "idle");
+    status.textContent = "";
+  }
+
+  function openPDP(p, opener) {
+    var el = $("#pdp");
+    if (!el) return;
+    pdp.opener = opener || null;
+    pdpFill(p);
+
+    if (!pdp.bound) {
+      pdp.bound = true;
+      $("#pdp-add").addEventListener("click", function () {
+        var pr = pdp.product; if (!pr) return;
+        var st = $("#pdp-status");
+        if (pr.status === "soldout") { announce(t("card.notifyset") + " · " + pr.name); return; }
+        if (!pdp.size) { st.setAttribute("data-state", "error"); st.textContent = t("detail.size"); flash($("#pdp-sizes")); return; }
+        st.setAttribute("data-state", "success");
+        st.textContent = t("card.added") + ": " + pr.name + " (" + pdp.size + ")";
+        announce(t("card.added") + ": " + pr.name + " (" + pdp.size + ")");
+      });
+      $$("[data-pdp-close]", el).forEach(function (b) { b.addEventListener("click", closePDP); });
+    }
+
+    el.hidden = false;
+    document.body.style.overflow = "hidden";
+    requestAnimationFrame(function () { el.setAttribute("data-open", "true"); });
+    var closeBtn = $(".pdp__close", el);
+    if (closeBtn) closeBtn.focus();
+    document.addEventListener("keydown", pdpKey);
+  }
+
+  function closePDP() {
+    var el = $("#pdp");
+    if (!el || el.hidden) return;
+    el.setAttribute("data-open", "false");
+    document.removeEventListener("keydown", pdpKey);
+    var v = el.querySelector(".prod-video"); if (v) v.pause();
+    var finish = function () {
+      el.hidden = true;
+      document.body.style.overflow = "";
+      if (pdp.opener) { try { pdp.opener.focus(); } catch (e) {} }
+    };
+    if (REDUCED) finish(); else setTimeout(finish, 300);
+  }
+
+  function pdpKey(e) {
+    if (e.key === "Escape") { closePDP(); return; }
+    if (e.key === "Tab") { trapFocus(e, $(".pdp__dialog")); }
+  }
+
+  function trapFocus(e, container) {
+    if (!container) return;
+    var f = $$('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', container)
+      .filter(function (el) { return !el.disabled && el.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 
   /* =================================================================
@@ -321,6 +454,8 @@
       var out = $("#term-output");
       if (out && out.getAttribute("data-state") !== "ok") out.textContent = t("hero.term.idle");
       scrambleRefresh();
+      var pdpEl = $("#pdp");
+      if (pdp.product && pdpEl && !pdpEl.hidden) pdpFill(pdp.product);
     });
   }
 

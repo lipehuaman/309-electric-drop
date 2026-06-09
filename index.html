@@ -16,7 +16,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lekton:ital,wght@0,400;0,700;1,400&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/base.css">
@@ -204,8 +204,8 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
     <section class="section story" id="story" aria-labelledby="story-title">
       <div class="container story__grid">
         <div class="manifesto">
-          <span class="seq" data-inview><span data-i18n="story.seqn">02</span> <small data-i18n="story.seq">Sequence</small></span>
-          <p class="eyebrow" data-inview data-i18n="story.eyebrow">The concept</p>
+          <span class="seq" data-inview><span data-i18n="story.seqn">02</span> <small data-scramble data-i18n="story.seq">Sequence</small></span>
+          <p class="eyebrow" data-inview data-scramble data-i18n="story.eyebrow">The concept</p>
           <h2 class="manifesto__title" id="story-title" data-inview data-i18n="story.title">Modular synergy</h2>
           <p class="manifesto__body" data-inview><strong data-i18n="story.body1">Technology is not just built. It is co-created.</strong></p>
           <p class="manifesto__body" data-inview data-i18n="story.body2">Each module is bold and capable on its own. But it is through connection, through shared purpose, that the extraordinary emerges.</p>
@@ -235,8 +235,8 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
     <section class="section merch" id="drop" aria-labelledby="drop-title">
       <div class="container">
         <div class="section__head">
-          <span class="seq" data-inview><span data-i18n="drop.seqn">03</span> <small data-i18n="drop.seq">Sequence</small></span>
-          <p class="eyebrow" data-inview data-i18n="drop.eyebrow">Limited release</p>
+          <span class="seq" data-inview><span data-i18n="drop.seqn">03</span> <small data-scramble data-i18n="drop.seq">Sequence</small></span>
+          <p class="eyebrow" data-inview data-scramble data-i18n="drop.eyebrow">Limited release</p>
           <h2 id="drop-title" style="font-size:var(--fs-h2)" data-inview data-i18n="drop.title">The drop</h2>
           <p class="lead" data-inview data-i18n="drop.lead">Three editions, drawn straight from the identity system. Black, white, electric green, nothing else.</p>
         </div>
@@ -248,8 +248,8 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
     <section class="section access" id="access" aria-labelledby="access-title">
       <div class="container container--tight">
         <div class="access__inner" data-inview>
-          <span class="seq"><span data-i18n="access.seqn">04</span> <small data-i18n="access.seq">Sequence</small></span>
-          <p class="eyebrow" style="margin-top:var(--space-16)" data-i18n="access.eyebrow">Join the network</p>
+          <span class="seq"><span data-i18n="access.seqn">04</span> <small data-scramble data-i18n="access.seq">Sequence</small></span>
+          <p class="eyebrow" style="margin-top:var(--space-16)" data-scramble data-i18n="access.eyebrow">Join the network</p>
           <h2 class="access__title" id="access-title" data-i18n="access.title">Request early access</h2>
           <p class="lead" data-i18n="access.lead">The next drop is co-created with the network. Leave your email to receive the command.</p>
 
@@ -304,6 +304,49 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
       </div>
     </div>
   </footer>
+
+  <!-- ============ PRODUCT DETAIL (skylrk-style, populated from data) ============ -->
+  <div class="pdp" id="pdp" hidden>
+    <div class="pdp__backdrop" data-pdp-close></div>
+    <div class="pdp__dialog" role="dialog" aria-modal="true" aria-labelledby="pdp-name">
+      <button class="pdp__close" type="button" data-pdp-close aria-label="Close">
+        <span aria-hidden="true">&#215;</span>
+      </button>
+
+      <div class="pdp__media">
+        <div class="pdp__media-inner" id="pdp-media"><!-- video or svg mockup injected --></div>
+        <span class="pdp__rotate" data-scramble>360 view</span>
+      </div>
+
+      <div class="pdp__info">
+        <span class="pdp__edition" id="pdp-edition"></span>
+        <h2 class="pdp__name" id="pdp-name"></h2>
+        <span class="pdp__price" id="pdp-price"></span>
+        <p class="pdp__desc" id="pdp-desc"></p>
+
+        <div class="pdp__rule"></div>
+        <dl class="pdp__specs">
+          <div class="pdp__spec"><dt data-i18n="detail.fabric">Fabric</dt><dd id="pdp-fabric"></dd></div>
+          <div class="pdp__spec"><dt data-i18n="detail.features">Features</dt><dd><ul id="pdp-features"></ul></dd></div>
+          <div class="pdp__spec"><dt data-i18n="detail.made">Made</dt><dd id="pdp-made"></dd></div>
+        </dl>
+        <div class="pdp__rule"></div>
+
+        <div class="pdp__field">
+          <span class="field__label"><span data-i18n="detail.color">Colourway</span> <span class="pdp__field-val" id="pdp-color"></span></span>
+          <div class="pdp__swatches" id="pdp-swatches" role="group" aria-label="Colourway"></div>
+        </div>
+
+        <div class="pdp__field">
+          <span class="field__label"><span data-i18n="detail.size">Size</span> <span class="pdp__field-val" id="pdp-size-val"></span></span>
+          <div class="pdp__sizes" id="pdp-sizes" role="group" aria-label="Size"></div>
+        </div>
+
+        <button class="btn btn--primary pdp__add" id="pdp-add" type="button"></button>
+        <p class="form__status pdp__status" id="pdp-status" data-state="idle" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
 
   <!-- live region + toast for cart/notify feedback -->
   <div id="live" class="sr-only" role="status" aria-live="polite"></div>

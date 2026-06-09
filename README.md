@@ -42,7 +42,7 @@ Static files only, drop the folder on **GitHub Pages**, **Netlify** or **Vercel*
 | Positive (black-on-white) and Negative (white-on-black) treatments | Shipped as a live **theme toggle**, dark-first by default (the brand's primary surface). |
 | Logo built from a single modular shape, connected like circuits; "waiting for your command" | The hero **assembles the 309 mark on load**, and the Brand Story section animates **modules connecting into one core** on scroll. The hero **command terminal** realises "waiting for your command". |
 | Condensed / very-short logo for use under 60px | Footer and nav use the compact 309 mark; clear-space preserved via padding tokens. |
-| Rajdhani (Regular→Bold), including Spanish accented glyphs | Rajdhani throughout via Google Fonts. The Spanish glyph set is why the page ships an **EN/ES toggle**. |
+| Rajdhani (Regular to Bold), including Spanish accented glyphs | Rajdhani for everything via Google Fonts, with **Lekton** (mono) reserved for terminal, HUD and data-label elements. The Spanish glyph set is why the page ships an **EN/ES toggle**. |
 | Merch: Black-Edition tee, Electric-Green tee, Black-Edition hoodie (sizes S/M/L) | The three products, data-driven from `js/products.js`. Garments are flat **SVG/CSS mockups** (no stock imagery), coloured strictly within palette. |
 
 The 309 wordmark is **traced to a single-colour SVG from the supplied brand book** (`assets/logo-309.svg`) and inlined once as a `<symbol>`, so it inherits `currentColor` and recolours instantly across both themes and on each garment.
@@ -67,6 +67,8 @@ Reusable, BEM-named, flat-specificity blocks:
 - **Button** (`.btn` + `--primary` / `--ghost`) with an electric-current sweep on hover/focus and an `aria-disabled` state.
 - **Nav** (`.nav`), fixed, blurs on scroll, mobile burger with proper `aria-expanded`, active-link tracking.
 - **ProductCard** (`.card`), generated from data; size selector (`aria-pressed`), available / sold-out states, hover scanline.
+- **Product detail** (`.pdp`): a skylrk-style two-column modal opened from each card: looping video, edition, price, fabric/features, colourway swatches, size selector and add-to-bag. Accessible dialog (focus trap, Escape, restore focus, scroll lock).
+- **Hero**: full-viewport, centered, with a vanilla-canvas particle sphere background, a boot preloader and a text-scramble decode effect on secondary copy.
 - **Form / Field** (`.field`, `.form__status`), labelled input, focus-within accent, invalid state, status line.
 - **Terminal**, **chip**, **toggle**, **toast**, supporting units.
 
@@ -94,13 +96,13 @@ Reusable, BEM-named, flat-specificity blocks:
 ## Known limitations & next steps
 
 - **No backend.** The signup and "add to bag" are client-side only; wiring to a real endpoint (and a cart) is the obvious next step.
-- **Garment mockups are stylised** flat silhouettes, not photography. Swapping in real product shots (with `loading="lazy"` and `srcset`) would lift the visual fidelity.
+- **Product media** uses optimised looping videos (compressed to ~250-320 KB each, with poster frames, played only while in view). The **hoodie video is pending**, so that card falls back to the coded SVG mockup until it lands.
 - **Logo is traced** from the brand book raster-to-vector; for production the original vector from the brand owner should replace `assets/logo-309.svg`.
 - **i18n is intentionally lightweight** (a flat dictionary, two locales). A larger site would move to per-page JSON and pluralisation rules.
 - The condensed "very-short" logo variant could be a separate optimised asset rather than the same mark scaled down.
 
 ## Credits
 
-- **Typeface:** [Rajdhani](https://fonts.google.com/specimen/Rajdhani) by Indian Type Foundry, via Google Fonts (SIL Open Font License).
+- **Typefaces:** [Rajdhani](https://fonts.google.com/specimen/Rajdhani) and [Lekton](https://fonts.google.com/specimen/Lekton), via Google Fonts (SIL Open Font License).
 - **Brand & marks:** 309 Technology brand book (provided). Logo traced to SVG for this build.
 - **Design & front-end build:** assessment submission.

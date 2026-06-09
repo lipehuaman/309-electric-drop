@@ -33,11 +33,12 @@
   position: relative; z-index: 2;
   display: flex; flex-direction: column; align-items: center;
   gap: var(--space-24);
-  width: 100%; max-width: 760px;
+  width: 100%; max-width: 1180px;
 }
 .hero__eyebrow { margin: 0; }
 .hero__title { font-size: var(--fs-hero); margin: 0; }
-.hero__title .line { display: block; }
+/* each line stays on a single line in every language (never breaks mid-line) */
+.hero__title .line { display: block; white-space: nowrap; }
 .hero__title .accent { color: var(--accent); }
 [data-theme="positive"] .hero__title .accent { color: var(--fg); }
 .hero__lead { margin: 0 auto; max-width: 54ch; color: var(--fg-muted); }
