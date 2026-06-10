@@ -21,6 +21,21 @@
   to   { clip-path: inset(0 0 0 0); }
 }
 
+/* signature green square: gentle phosphor pulse */
+@keyframes sqPulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 rgb(var(--brand-green-rgb) / 0); }
+  50%      { opacity: 0.55; box-shadow: 0 0 8px rgb(var(--brand-green-rgb) / 0.7); }
+}
+/* form: error shake + loading spinner */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(3px); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 /* ---------- caret (terminal) ---------- */
 .terminal__caret { animation: blink 1.05s steps(2) infinite; }
 
@@ -56,5 +71,9 @@
   [data-reveal],
   [data-inview] { opacity: 1 !important; transform: none !important; }
   .terminal__caret,
+  .eyebrow::before,
+  .sq,
+  .form__status::before,
+  .field[data-invalid="true"],
   .card:hover .card__media::after { animation: none !important; }
 }

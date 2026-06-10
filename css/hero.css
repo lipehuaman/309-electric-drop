@@ -175,3 +175,13 @@
   .js .loader { animation: none; }
   .js .loader__mark { clip-path: none; animation: none; }
 }
+
+/* ---------------------------------------------------------------------
+   Positive (light) theme: brand green #58FF00 is invisible as thin lines
+   on white, so the HUD frame switches to a deeper green and drops glow.
+   --------------------------------------------------------------------- */
+[data-theme="positive"] .hero__frame { border-color: rgb(26 150 0 / 0.32); }
+[data-theme="positive"] .hf__c { border-color: #1a9e00; filter: none; }
+[data-theme="positive"] .hf__top { color: #1a9e00; border-color: rgb(26 150 0 / 0.5); text-shadow: none; }
+[data-theme="positive"] .hf__ticks,
+[data-theme="positive"] .hf__bar { background: #1a9e00; filter: none; }

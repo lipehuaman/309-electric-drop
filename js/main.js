@@ -272,7 +272,7 @@
      ================================================================= */
   var ROUTES = {
     drop: "#drop", "el drop": "#drop",
-    manifesto: "#story", manifiesto: "#story",
+    story: "#story", historia: "#story", manifesto: "#story", manifiesto: "#story",
     access: "#access", acceso: "#access",
     home: "#top", top: "#top", "309": "#top"
   };
@@ -566,6 +566,26 @@
     });
   }
 
+  function setupParallax() {
+    if (REDUCED) return;
+    var el = $(".modules__mesh");
+    if (!el || !("IntersectionObserver" in window)) return;
+    var active = false, ticking = false;
+    new IntersectionObserver(function (en) {
+      en.forEach(function (x) { active = x.isIntersecting; });
+    }, { threshold: 0 }).observe(el);
+    window.addEventListener("scroll", function () {
+      if (!active || ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var r = el.getBoundingClientRect();
+        var off = (window.innerHeight / 2 - (r.top + r.height / 2)) * 0.06;
+        el.style.transform = "translateY(" + off.toFixed(1) + "px)";
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
   function setupClock() {
     var el = $("#hero-clock");
     if (!el) return;
@@ -591,6 +611,7 @@
     setupToggles();
     setupReveals();
     setupClock();
+    setupParallax();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

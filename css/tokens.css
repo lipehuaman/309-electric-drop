@@ -124,7 +124,7 @@
   --fx-grid:   rgb(26 150 0 / 0.07);
   --fx-scan:   rgb(26 150 0 / 0.03);
   --glass-bg:   rgb(255 255 255 / 0.5);
-  --glass-edge: rgb(0 0 0 / 0.12);
+  --glass-edge: rgb(0 0 0 / 0.16);
   --glass-hi:   rgb(255 255 255 / 0.65);
   --glass-blur: blur(13px) saturate(1.2);
   --glow:      rgb(var(--brand-green-rgb) / 0.30);

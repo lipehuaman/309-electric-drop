@@ -174,7 +174,8 @@
     color: var(--fg);
   }
   .nav__burger-bar { position: relative; width: 18px; height: 2px; background: currentColor; }
-  .nav__burger-bar::before.nav__burger-bar::after {
+  .nav__burger-bar::before,
+  .nav__burger-bar::after {
     content: ""; position: absolute; left: 0; width: 18px; height: 2px; background: currentColor;
     transition: transform var(--dur) var(--ease-out);
   }
@@ -433,13 +434,32 @@
 .form__status[data-state="success"] { color: var(--fg); }
 .form__status::before {
   content: "";
-  width: 0.55em; height: 0.55em;
+  width: 0.6em; height: 0.6em;
   flex: none;
   background: var(--fg-faint);
+  transition: background var(--dur-fast) var(--ease-out);
 }
-.form__status[data-state="success"]::before { background: var(--accent); }
-.form__status[data-state="error"]::before { background: var(--fg); }
-.form__status[data-state="loading"]::before { background: var(--accent); animation: blink 0.7s steps(2) infinite; }
+.form__status[data-state="success"]::before {
+  content: "✓";
+  width: auto; height: auto;
+  background: none;
+  color: var(--accent);
+  font-weight: var(--fw-bold);
+}
+.form__status[data-state="error"]::before {
+  background: var(--fg);
+  animation: shake 0.4s var(--ease-out);
+}
+.form__status[data-state="loading"]::before {
+  background: none;
+  width: 0.85em; height: 0.85em;
+  border: 2px solid rgb(var(--brand-green-rgb) / 0.25);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+/* the field itself shakes on an invalid submit */
+.field[data-invalid="true"] { animation: shake 0.4s var(--ease-out); }
 
 /* ---------------------------------------------------------------------
    TOAST (cart feedback, also announced to AT via live region)
@@ -597,3 +617,20 @@
 @media (prefers-reduced-motion: reduce) {
   .pdp__backdrop, .pdp__dialog { transition: none; }
 }
+
+/* ---------------------------------------------------------------------
+   Positive (light) theme adjustments: deeper green for thin green lines
+   and text that would be illegible at #58FF00 on white, plus a lighter
+   liquid-glass shadow so panels do not feel heavy on the light surface.
+   Solid green FILLS (primary button, selected size, square accent) stay
+   on brand at #58FF00.
+   --------------------------------------------------------------------- */
+[data-theme="positive"] .terminal__caret { color: #1a9e00; }
+[data-theme="positive"] .terminal__dot--live { background: #1a9e00; box-shadow: none; }
+[data-theme="positive"] .field__control:focus-within { border-color: #1a9e00; }
+[data-theme="positive"] .chip:hover { border-color: #1a9e00; }
+[data-theme="positive"] .form__status[data-state="loading"]::before { border-top-color: #1a9e00; }
+[data-theme="positive"] .form__status[data-state="success"]::before { color: #1a9e00; }
+[data-theme="positive"] .card,
+[data-theme="positive"] .terminal { box-shadow: inset 0 1px 0 var(--glass-hi), 0 6px 20px rgb(0 0 0 / 0.10); }
+[data-theme="positive"] .field__caret { color: #1a9e00; }
