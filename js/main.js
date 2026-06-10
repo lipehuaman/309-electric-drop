@@ -622,6 +622,20 @@
     var mv = $(".modules__viewer");
     if (!mv) return;
     if (REDUCED) mv.removeAttribute("auto-rotate");
+
+    // keep the model readable on both themes: light model on dark bg,
+    // dark model on light bg (recolour at runtime via the model-viewer API)
+    function tintModel() {
+      if (!mv.model || !mv.model.materials) return;
+      var light = document.documentElement.getAttribute("data-theme") === "positive";
+      var c = light ? [0.09, 0.09, 0.09, 1] : [0.90, 0.92, 0.90, 1];
+      mv.model.materials.forEach(function (m) {
+        if (m.pbrMetallicRoughness) m.pbrMetallicRoughness.setBaseColorFactor(c);
+      });
+    }
+    mv.addEventListener("load", tintModel);
+    window.addEventListener("themechange", tintModel);
+
     var loaded = false;
     function load() {
       if (loaded) return;
