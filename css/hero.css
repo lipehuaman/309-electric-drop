@@ -32,7 +32,7 @@
 
 /* story: modular synergy as a particle mesh (same language as the hero) */
 .modules__viewer {
-  display: block; width: 100%; height: 100%;
+  display: block; width: 100%; aspect-ratio: 1 / 1; height: auto;
   background-color: transparent;
   --poster-color: transparent;
   --progress-bar-color: var(--accent);
