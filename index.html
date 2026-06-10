@@ -197,7 +197,6 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
 
       <!-- cyberpunk HUD frame -->
       <div class="hero__frame" aria-hidden="true">
-        <span class="hf__top"><span id="hero-clock">309.SYS // 00:00:00</span></span>
         <span class="hf__bar"></span>
         <span class="hf__ticks"></span>
         <i class="hf__c hf__c--tl"></i><i class="hf__c hf__c--tr"></i><i class="hf__c hf__c--bl"></i><i class="hf__c hf__c--br"></i>
@@ -216,10 +215,14 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
           <p class="story__sig" data-inview><span class="sq"></span> <span data-i18n="story.sig">One shape. Repeated. Connected.</span></p>
         </div>
 
-        <!-- modular synergy as a futuristic mesh (same language as the hero sphere) -->
+        <!-- modular synergy as a rotating 3D module (GLB, transparent, theme-lit) -->
         <div class="modules" data-inview>
-          <canvas class="modules__mesh" aria-label="A complex modular network forming one system" role="img"
-                  data-sphere data-dust="640" data-nodes="80" data-radius="0.36" data-edges="4" data-jitter="0.16" data-longlinks="22"></canvas>
+          <model-viewer class="modules__viewer" src="assets/story-model.glb"
+                        alt="A complex modular network forming one system"
+                        auto-rotate rotation-per-second="22deg" auto-rotate-delay="0"
+                        interaction-prompt="none" disable-zoom disable-pan disable-tap
+                        shadow-intensity="0" exposure="1.05" environment-image="neutral"
+                        loading="lazy" reveal="auto"></model-viewer>
         </div>
       </div>
     </section>
@@ -269,7 +272,7 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
               </div>
             </div>
             <div style="margin-top:var(--space-16)">
-              <button class="btn btn--primary" id="access-submit" type="submit">
+              <button class="btn btn--glass" id="access-submit" type="submit">
                 <span data-i18n="access.submit">Request access</span> <span class="btn__arrow" aria-hidden="true">→</span>
               </button>
             </div>
@@ -294,13 +297,13 @@ l49 -24 2378 -3 2377 -2 0 -223 c0 -252 -9 -310 -66 -417 -71 -136 -186 -233
         </div>
         <div class="footer__cols">
           <div class="footer__col">
-            <h4 data-i18n="footer.nav">Navigate</h4>
+            <h3 data-i18n="footer.nav">Navigate</h3>
             <a href="#story" data-i18n="nav.story">Brand Story</a>
             <a href="#drop" data-i18n="nav.drop">The Drop</a>
             <a href="#access" data-i18n="nav.access">Access</a>
           </div>
           <div class="footer__col">
-            <h4 data-i18n="footer.connect">Connect</h4>
+            <h3 data-i18n="footer.connect">Connect</h3>
             <a href="#" rel="noopener">GitHub</a>
             <a href="#" rel="noopener">Instagram</a>
             <a href="#" rel="noopener">X / Twitter</a>

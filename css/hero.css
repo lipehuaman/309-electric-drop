@@ -31,7 +31,13 @@
 [data-theme="positive"] .hero__glow { opacity: 1; }
 
 /* story: modular synergy as a particle mesh (same language as the hero) */
-.modules__mesh { display: block; width: 100%; height: 100%; }
+.modules__viewer {
+  display: block; width: 100%; height: 100%;
+  background-color: transparent;
+  --poster-color: transparent;
+  --progress-bar-color: var(--accent);
+  --progress-mask: transparent;
+}
 
 .hero__center {
   position: relative; z-index: 2;
@@ -102,20 +108,6 @@
   border: var(--border-width) solid rgb(var(--brand-green-rgb) / 0.18);
   border-radius: 12px;
 }
-/* top-center clock module straddling the top border */
-.hf__top {
-  position: absolute; top: -1px; left: 50%; transform: translate(-50%, -50%);
-  display: inline-flex; align-items: center;
-  padding: 5px 16px;
-  background: var(--bg);
-  border: var(--border-width) solid rgb(var(--brand-green-rgb) / 0.4);
-  border-radius: 6px;
-  font-family: var(--font-mono);
-  font-size: var(--fs-micro); letter-spacing: var(--tracking-wide);
-  color: var(--accent);
-  text-shadow: 0 0 6px var(--glow);
-  white-space: nowrap;
-}
 /* corner brackets with phosphor glow */
 .hf__c { position: absolute; width: 22px; height: 22px; border: 2px solid var(--accent); filter: drop-shadow(0 0 5px var(--glow)); }
 .hf__c--tl { top: -1px; left: -1px; border-right: 0; border-bottom: 0; border-top-left-radius: 12px; }
@@ -135,8 +127,11 @@
   filter: drop-shadow(0 0 4px var(--glow));
 }
 @media (max-width: 620px) {
-  .hero__frame { left: 8px; right: 8px; bottom: 8px; }
-  .hf__ticks, .hf__bar { display: none; }
+  /* declutter + de-animate on phones: keep title, lead, CTAs, terminal */
+  .hero__frame { display: none; }
+  .hero__hud { display: none; }
+  .hero__foot { display: none; }
+  .hero__sphere { display: none; }
 }
 
 /* ---------------------------------------------------------------------
@@ -182,6 +177,5 @@
    --------------------------------------------------------------------- */
 [data-theme="positive"] .hero__frame { border-color: rgb(26 150 0 / 0.32); }
 [data-theme="positive"] .hf__c { border-color: #1a9e00; filter: none; }
-[data-theme="positive"] .hf__top { color: #1a9e00; border-color: rgb(26 150 0 / 0.5); text-shadow: none; }
 [data-theme="positive"] .hf__ticks,
 [data-theme="positive"] .hf__bar { background: #1a9e00; filter: none; }

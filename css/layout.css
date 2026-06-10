@@ -98,7 +98,7 @@ main { position: relative; z-index: var(--z-base); }
 .footer__brand .logo { width: 96px; color: var(--fg); } /* condensed mark, small size per brand */
 .footer__brand p { margin-top: var(--space-16); color: var(--fg-muted); max-width: 34ch; font-size: var(--fs-small); }
 .footer__cols { display: flex; flex-wrap: wrap; gap: clamp(var(--space-32), 6vw, var(--space-96)); }
-.footer__col h4 { font-size: var(--fs-micro); letter-spacing: var(--tracking-mega); color: var(--fg-faint); margin-bottom: var(--space-16); }
+.footer__col h3 { font-size: var(--fs-micro); letter-spacing: var(--tracking-mega); color: var(--fg-muted); margin-bottom: var(--space-16); }
 .footer__col a { display: block; padding-block: var(--space-4); color: var(--fg-muted); font-size: var(--fs-small); transition: color var(--dur-fast) var(--ease-out); }
 .footer__col a:hover { color: var(--fg); }
 .footer__bottom {
@@ -111,7 +111,7 @@ main { position: relative; z-index: var(--z-base); }
   font-size: var(--fs-micro);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--fg-faint);
+  color: var(--fg-muted);
 }
 
 /* Contrast guard: green never as informative text on the light (positive)

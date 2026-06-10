@@ -67,6 +67,19 @@
   backdrop-filter: var(--glass-blur);
 }
 
+/* liquid-glass CTA: semi-transparent, text follows theme (white on dark,
+   black on light). Hover stays monochrome (no electric-green sweep). */
+.btn--glass {
+  --btn-bg: var(--glass-bg);
+  --btn-fg: var(--fg);
+  --btn-line: var(--glass-edge);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+.btn--glass::after { background: var(--fg); }
+.btn--glass:hover,
+.btn--glass:focus-visible { color: var(--bg); border-color: var(--fg); }
+
 .btn__arrow { transition: transform var(--dur) var(--ease-out); }
 .btn:hover .btn__arrow { transform: translateX(4px); }
 
@@ -379,6 +392,24 @@
 .size:hover { border-color: var(--line-strong); color: var(--fg); }
 .size[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 .size:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* in-card size selector + quick action (brief: card carries size + Add/Notify) */
+.card__sizes { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+.card__action { display: flex; flex-direction: column; gap: var(--space-8); margin-top: auto; }
+.card__action .btn { width: 100%; }
+.card__status {
+  min-height: 1.2em;
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--tracking-wide);
+  color: var(--fg-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.card__status:empty,
+.card__status[data-state="idle"] { display: none; }
+.card__status[data-state="success"] { color: var(--accent); }
+.card__status[data-state="error"] { color: var(--fg); animation: shake 0.4s var(--ease-out); }
+[data-theme="positive"] .card__status[data-state="success"] { color: #1a9e00; }
 
 /* ---------------------------------------------------------------------
    FORM / FIELD (signup)

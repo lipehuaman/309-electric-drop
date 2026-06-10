@@ -172,6 +172,7 @@
 
   var instances = [];
   function init() {
+    if (window.matchMedia("(max-width: 620px)").matches) return; // mobile: no sphere
     var canvases = Array.prototype.slice.call(document.querySelectorAll("canvas[data-sphere]"));
     canvases.forEach(function (c) { var inst = createSphere(c); if (inst) instances.push(inst); });
   }

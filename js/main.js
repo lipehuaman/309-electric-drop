@@ -8,6 +8,7 @@
   "use strict";
 
   var REDUCED = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SMALL = window.matchMedia("(max-width: 620px)").matches;
   var $  = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
@@ -75,6 +76,11 @@
       card.className = "card";
       card.setAttribute("data-inview", "");
 
+      var sizesHTML = p.sizes.map(function (s) {
+        return '<button type="button" class="size" data-size="' + s + '" aria-pressed="false"' +
+          (out ? " disabled" : "") + ' aria-label="' + t("detail.size") + ' ' + s + '">' + s + '</button>';
+      }).join("");
+
       card.innerHTML =
         '<button type="button" class="card__trigger" aria-haspopup="dialog" aria-label="' + t("card.view") + ': ' + p.name + '">' +
           '<span class="card__media">' +
@@ -89,9 +95,35 @@
             '<span class="card__edition">' + p.edition + '</span></div>' +
             '<span class="card__price">$' + p.price + '</span>' +
           '</div>' +
+          '<div class="card__sizes" role="group" data-i18n-aria="card.size" aria-label="' + t("card.size") + '">' + sizesHTML + '</div>' +
+          '<div class="card__action">' +
+            '<button type="button" class="btn ' + (out ? "btn--ghost" : "btn--primary") + ' card__add" data-i18n="' + (out ? "card.notify" : "card.add") + '">' + t(out ? "card.notify" : "card.add") + '</button>' +
+            '<p class="card__status" data-state="idle" role="status"></p>' +
+          '</div>' +
         '</div>';
 
       card.querySelector(".card__trigger").addEventListener("click", function () { openPDP(p, this); });
+
+      // card-local size + action (quick add without opening the PDP)
+      var selected = null;
+      var sizeBtns = $$(".card__sizes .size", card);
+      var statusEl = $(".card__status", card);
+      function setStatus(state, msg) { statusEl.setAttribute("data-state", state); statusEl.textContent = msg || ""; }
+      sizeBtns.forEach(function (b) {
+        b.addEventListener("click", function () {
+          sizeBtns.forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+          b.setAttribute("aria-pressed", "true");
+          selected = b.getAttribute("data-size");
+          if (statusEl.getAttribute("data-state") === "error") setStatus("idle", "");
+        });
+      });
+      $(".card__add", card).addEventListener("click", function () {
+        if (out) { setStatus("success", t("card.notifyset")); announce(t("card.notifyset") + " \u00b7 " + p.name); return; }
+        if (!selected) { setStatus("error", t("card.size")); flash($(".card__sizes", card)); return; }
+        setStatus("success", t("card.added") + ": " + selected);
+        announce(t("card.added") + ": " + p.name + " (" + selected + ")");
+      });
+
       frag.appendChild(card);
     });
 
@@ -467,7 +499,7 @@
 
   function scrambleTo(el, text) {
     text = (text == null ? "" : String(text));
-    if (REDUCED) { el.textContent = text; return; }
+    if (REDUCED || SMALL) { el.textContent = text; return; }
     if (el._sti) { clearInterval(el._sti); el._sti = null; }
     var frame = 0;
     var settle = text.split("").map(function (ch, i) { return 3 + i + Math.floor(Math.random() * 6); });
@@ -568,7 +600,7 @@
 
   function setupParallax() {
     if (REDUCED) return;
-    var el = $(".modules__mesh");
+    var el = $(".modules__viewer");
     if (!el || !("IntersectionObserver" in window)) return;
     var active = false, ticking = false;
     new IntersectionObserver(function (en) {
@@ -586,17 +618,23 @@
     }, { passive: true });
   }
 
-  function setupClock() {
-    var el = $("#hero-clock");
-    if (!el) return;
-    function pad(n) { return (n < 10 ? "0" : "") + n; }
-    function tick() {
-      var d = new Date();
-      el.textContent = "309 // " + pad(d.getDate()) + "-" + pad(d.getMonth() + 1) + "-" + d.getFullYear() +
-        " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+  function setupStoryModel() {
+    var mv = $(".modules__viewer");
+    if (!mv) return;
+    if (REDUCED) mv.removeAttribute("auto-rotate");
+    var loaded = false;
+    function load() {
+      if (loaded) return;
+      loaded = true;
+      var s = document.createElement("script");
+      s.type = "module";
+      s.src = "assets/model-viewer.min.js";
+      document.head.appendChild(s);
     }
-    tick();
-    setInterval(tick, 1000);
+    if (!("IntersectionObserver" in window)) { load(); return; }
+    new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (en) { if (en.isIntersecting) { load(); obs.disconnect(); } });
+    }, { rootMargin: "400px 0px" }).observe(mv);
   }
 
   function boot() {
@@ -610,8 +648,8 @@
     setupForm();
     setupToggles();
     setupReveals();
-    setupClock();
     setupParallax();
+    setupStoryModel();
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
